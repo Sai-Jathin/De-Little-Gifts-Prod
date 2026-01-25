@@ -7,13 +7,12 @@ const PRODUCTS = [
   { 
     id: "Mystery Box", 
     name: "Mystery Box", 
-    priceRange: "₹100 - ₹500", 
-    category: "2024 Collection", 
-    rating: 4.8,
+    priceRange: "₹500 - ₹3000", 
+    category: "2026 Collection", 
+    rating: 5,
     description: "A hand-curated mystery box filled with artisanal surprises. Final price varies based on the size and specific craft items included inside.",
     media: [
-      { type: "image", url: "/assets/Calender/Calender1.jpeg" },
-      { type: "video", url: "/assets/Calender/Calender2.mp4" }
+      { type: "video", url: "/assets/mystery_box/mystery_box.mp4" }
     ],
     reviews: [
       { id: 1, user: "Anya K.", rating: 5, comment: "Such a beautiful surprise!" }
