@@ -5,9 +5,9 @@ const OWNER_PHONE = "919493456186";
 
 const PRODUCTS = [
   { 
-    id: "Calendar", 
-    name: "Midnight Rose Calendar", 
-    price: 1299, 
+    id: "Mystery Box", 
+    name: "Mystery Box", 
+    price: 100 - 500, 
     category: "2024 Collection", 
     rating: 4.8,
     description: "A premium limited-edition calendar featuring deep crimson floral aesthetics. Perfect for organizing your year with a touch of gothic elegance. High-quality matte finish 300gsm paper with gold-foil accents.",
