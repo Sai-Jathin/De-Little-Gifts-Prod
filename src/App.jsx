@@ -5,8 +5,8 @@ const OWNER_PHONE = "919493456186";
 
 const PRODUCTS = [
   { 
-    id: "Calender", 
-    name: "Midnight Rose Calender", 
+    id: "Calendar", 
+    name: "Midnight Rose Calendar", 
     price: 1299, 
     category: "2024 Collection", 
     rating: 4.8,
@@ -49,7 +49,6 @@ const Stars = ({ rating, size = "text-[10px]" }) => (
   </div>
 );
 
-// NEW: CUSTOMIZATION TICKER COMPONENT
 const CustomTicker = () => {
   const tickerItems = [
     "✨ Full Customization Available",
@@ -78,6 +77,7 @@ const CustomTicker = () => {
 
 const ProductGallery = ({ media, height = "h-96" }) => {
   const [index, setIndex] = useState(0);
+  const [touchStart, setTouchStart] = useState(null);
   const timerRef = useRef(null);
   
   const current = media[index];
@@ -87,7 +87,7 @@ const ProductGallery = ({ media, height = "h-96" }) => {
     if (timerRef.current) clearInterval(timerRef.current);
     timerRef.current = setInterval(() => {
       setIndex((prev) => (prev + 1) % media.length);
-    }, 4000);
+    }, 5000); // Increased to 5s for better mobile viewing
   };
 
   const next = (e) => { 
@@ -102,41 +102,80 @@ const ProductGallery = ({ media, height = "h-96" }) => {
     resetTimer();
   };
 
-  useEffect(() => {
-    if (media.length > 1) {
-      resetTimer();
+  // TOUCH SWIPE LOGIC
+  const handleTouchStart = (e) => setTouchStart(e.targetTouches[0].clientX);
+  const handleTouchMove = (e) => {
+    if (!touchStart) return;
+    const touchEnd = e.targetTouches[0].clientX;
+    const distance = touchStart - touchEnd;
+
+    if (distance > 50) { // Swipe Left
+      next();
+      setTouchStart(null);
+    } else if (distance < -50) { // Swipe Right
+      prev();
+      setTouchStart(null);
     }
+  };
+
+  useEffect(() => {
+    if (media.length > 1) resetTimer();
     return () => clearInterval(timerRef.current);
   }, [media.length]);
 
   if (!current) return <div className={`w-full ${height} bg-zinc-900`} />;
 
   return (
-    <div className={`relative w-full ${height} bg-zinc-900 overflow-hidden group/gallery`}>
+    <div 
+      className={`relative w-full ${height} bg-zinc-900 overflow-hidden group/gallery`}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+    >
       <AnimatePresence mode="wait">
-        <motion.div key={current.url} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.6 }} className="w-full h-full">
+        <motion.div 
+          key={current.url} 
+          initial={{ opacity: 0 }} 
+          animate={{ opacity: 1 }} 
+          exit={{ opacity: 0 }} 
+          transition={{ duration: 0.4 }} 
+          className="w-full h-full"
+        >
           {isVideo ? (
-            <video src={current.url} className="w-full h-full object-cover" autoPlay muted playsInline loop />
+            <video 
+              src={current.url} 
+              className="w-full h-full object-cover" 
+              autoPlay 
+              muted 
+              playsInline 
+              loop 
+              preload="metadata"
+            />
           ) : (
-            <img src={current.url} alt="Product" className="w-full h-full object-cover" />
+            <img 
+              src={current.url} 
+              alt="Product" 
+              className="w-full h-full object-cover" 
+              loading="lazy"
+            />
           )}
         </motion.div>
       </AnimatePresence>
       
       {media.length > 1 && (
         <>
-          <div className="absolute inset-0 flex items-center justify-between px-4 opacity-0 group-hover/gallery:opacity-100 transition-opacity pointer-events-none">
-            <button onClick={prev} className="pointer-events-auto w-8 h-8 rounded-full bg-black/50 backdrop-blur-md border border-white/10 flex items-center justify-center hover:bg-red-600 transition-colors">
-              <span className="text-white text-xs">←</span>
+          {/* Controls: Always visible on small screens, hover on large */}
+          <div className="absolute inset-0 flex items-center justify-between px-4 opacity-100 lg:opacity-0 lg:group-hover/gallery:opacity-100 transition-opacity pointer-events-none">
+            <button onClick={prev} className="pointer-events-auto w-10 h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/10 flex items-center justify-center active:bg-red-600 transition-colors">
+              <span className="text-white text-sm">←</span>
             </button>
-            <button onClick={next} className="pointer-events-auto w-8 h-8 rounded-full bg-black/50 backdrop-blur-md border border-white/10 flex items-center justify-center hover:bg-red-600 transition-colors">
-              <span className="text-white text-xs">→</span>
+            <button onClick={next} className="pointer-events-auto w-10 h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/10 flex items-center justify-center active:bg-red-600 transition-colors">
+              <span className="text-white text-sm">→</span>
             </button>
           </div>
 
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
             {media.map((_, i) => (
-              <div key={i} className={`h-1 rounded-full transition-all duration-500 ${i === index ? 'w-4 bg-red-600' : 'w-1 bg-white/30'}`} />
+              <div key={i} className={`h-1 rounded-full transition-all duration-500 ${i === index ? 'w-6 bg-red-600' : 'w-1.5 bg-white/30'}`} />
             ))}
           </div>
         </>
@@ -186,14 +225,12 @@ export default function App() {
   return (
     <div className="min-h-screen bg-[#050505] text-white font-['Outfit'] antialiased">
       
-      {/* TOP GREETING BAR */}
       <div className="fixed top-0 w-full z-[110] bg-red-600 py-2 px-6 shadow-lg">
         <motion.p initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} className="text-[9px] font-black uppercase tracking-[0.3em] text-center text-white">
-          Welcome to DE LITTLE GIFTS • Handcrafted Elegance Delivered to Your Door
+          Welcome to DE LITTLE GIFTS • Handcrafted Elegance Delivered
         </motion.p>
       </div>
 
-      {/* NAVBAR WITH TAGLINE */}
       <nav className="fixed top-[28px] w-full z-[100] bg-[#050505]/95 backdrop-blur-xl border-b border-white/5 px-6 py-4 flex justify-between items-center">
         <div className="w-20 hidden md:block" /> 
         
@@ -214,7 +251,6 @@ export default function App() {
         </button>
       </nav>
 
-      {/* SCROLLING CUSTOMIZATION BAR */}
       <CustomTicker />
 
       <main className="pt-52 pb-20">
@@ -230,14 +266,14 @@ export default function App() {
                   <motion.button 
                     whileTap={{ scale: 0.9 }}
                     onClick={(e) => { handleUpdateCart(product, 1, e); if(!isInCart(product.id)) setCartOpen(true); }}
-                    className={`absolute top-6 right-6 w-10 h-10 rounded-full flex items-center justify-center shadow-2xl z-30 opacity-0 group-hover:opacity-100 transition-all ${isInCart(product.id) ? 'bg-white text-black' : 'bg-red-600 text-white'}`}
+                    className={`absolute top-6 right-6 w-10 h-10 rounded-full flex items-center justify-center shadow-2xl z-30 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-all ${isInCart(product.id) ? 'bg-white text-black' : 'bg-red-600 text-white'}`}
                   >
                     <span className="text-xl font-bold">{isInCart(product.id) ? '✓' : '+'}</span>
                   </motion.button>
 
                   <div className="px-2" onClick={() => setViewingProduct(product)}>
-                    <div className="flex justify-between items-start mb-1">
-                      <h3 className="text-[14px] font-bold truncate opacity-90 uppercase tracking-widest">{product.name}</h3>
+                    <div className="flex flex-col mb-1">
+                      <h3 className="text-[12px] font-bold truncate opacity-90 uppercase tracking-widest">{product.name}</h3>
                       <Stars rating={product.rating} />
                     </div>
                     <p className="text-red-600 font-black text-lg">₹{product.price}</p>
@@ -275,22 +311,12 @@ export default function App() {
                       : "bg-red-600 text-white shadow-red-900/20"
                     }`}
                   >
-                    {isInCart(viewingProduct.id) ? "✓ Added to Bag — Add More?" : `Add to Bag — ₹${viewingProduct.price}`}
+                    {isInCart(viewingProduct.id) ? "✓ Added to Bag" : `Add to Bag — ₹${viewingProduct.price}`}
                   </button>
-
-                  {isInCart(viewingProduct.id) && (
-                    <motion.button 
-                      initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                      onClick={() => setCartOpen(true)}
-                      className="w-full text-[10px] font-black uppercase tracking-widest text-red-600 mb-16 text-center"
-                    >
-                      View Bag and Checkout →
-                    </motion.button>
-                  )}
 
                   <div className="pt-12 border-t border-white/5">
                     <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-white/30 mb-8">Verified Reviews</h4>
-                    <div className="space-y-6">
+                    <div className="space-y-4">
                       {viewingProduct.reviews.map((rev) => (
                         <div key={rev.id} className="bg-white/5 p-6 rounded-[2rem] border border-white/5">
                           <div className="flex justify-between mb-3 text-[10px] font-black uppercase text-red-600 tracking-widest">
@@ -309,7 +335,6 @@ export default function App() {
         </AnimatePresence>
       </main>
 
-      {/* --- CART DRAWER --- */}
       <AnimatePresence>
         {isCartOpen && (
           <>
@@ -321,15 +346,15 @@ export default function App() {
               </div>
               <div className="flex-1 overflow-y-auto space-y-4">
                 {cart.length === 0 ? (
-                  <div className="h-full flex flex-col items-center justify-center opacity-20 uppercase text-[10px] font-black tracking-widest">Your bag is empty</div>
+                  <div className="h-full flex flex-col items-center justify-center opacity-20 uppercase text-[10px] font-black tracking-widest text-center">Your bag is empty</div>
                 ) : (
                   cart.map(item => (
                     <div key={item.id} className="flex gap-4 bg-white/5 p-3 rounded-[1.5rem] items-center border border-white/5">
                       <div className="w-16 h-16 rounded-xl overflow-hidden bg-zinc-900 flex-shrink-0">
                         {item.media[0]?.type === "video" || item.media[0]?.url.endsWith('.mp4') ? (
-                          <video src={item.media[0].url} className="w-full h-full object-cover" muted autoPlay loop playsInline />
+                          <video src={item.media[0].url} className="w-full h-full object-cover" muted playsInline />
                         ) : (
-                          <img src={item.media[0].url} className="w-full h-full object-cover" />
+                          <img src={item.media[0].url} className="w-full h-full object-cover" loading="lazy" />
                         )}
                       </div>
                       <div className="flex-1 min-w-0">
@@ -351,7 +376,7 @@ export default function App() {
                     <span className="text-[10px] font-bold text-white/30 uppercase tracking-widest">Subtotal</span>
                     <span className="text-2xl font-black text-red-600">₹{cart.reduce((a,c)=>a+(c.price*c.quantity),0)}</span>
                   </div>
-                  <button onClick={() => setCheckoutOpen(true)} className="w-full bg-red-600 py-5 rounded-full font-black uppercase text-xs tracking-widest shadow-xl shadow-red-900/20">Proceed to Checkout</button>
+                  <button onClick={() => setCheckoutOpen(true)} className="w-full bg-red-600 py-5 rounded-full font-black uppercase text-xs tracking-widest shadow-xl shadow-red-900/20 active:scale-95">Proceed to Checkout</button>
                 </div>
               )}
             </motion.div>
@@ -359,7 +384,6 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* --- CHECKOUT MODAL --- */}
       <AnimatePresence>
         {isCheckoutOpen && (
           <div className="fixed inset-0 z-[200] flex items-center justify-center p-6">
