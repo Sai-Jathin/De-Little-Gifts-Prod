@@ -1,12 +1,15 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite' // 1. Added this
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    tailwindcss(), // 2. Added this
+  ],
   server: {
-    allowedHosts: ['unsensualistic-corban-nongraven.ngrok-free.dev'],
+    allowedHosts: ['all'],
     proxy: {
-      // This intercepts the request and sends it to your local backend
       '/gift-shop-backend': {
         target: 'http://localhost:8080',
         changeOrigin: true,
