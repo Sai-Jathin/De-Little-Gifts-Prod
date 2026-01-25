@@ -10,7 +10,7 @@ const PRODUCTS = [
     priceRange: "₹500 - ₹3000", 
     category: "2026 Collection", 
     rating: 5,
-    description: "A hand-curated mystery box filled with artisanal surprises. Final price varies based on the size and specific craft items included inside.",
+    description: "Our signature luxury gift box, A hand-curated mystery box filled with artisanal surprises. Final price varies based on the size and specific craft items included inside.",
     media: [
       { type: "video", url: "/assets/mystery_box/mystery_box.mp4" }
     ],
@@ -19,15 +19,29 @@ const PRODUCTS = [
     ]
   },
   { 
-    id: "Heart", 
-    name: "Velvet Heart Box", 
-    priceRange: "₹2,499 - ₹4,500", 
-    category: "Luxury Gifts", 
+    id: "Heart frame/Calendar", 
+    name: "Heart frame/Calendar", 
+    priceRange: "₹250 - ₹500", 
+    category: "Calendar", 
     rating: 5.0,
-    description: "Our signature luxury gift box. Wrapped in deep midnight velvet. Price varies significantly based on custom rose types and embroidery requests.",
+    description: "Heart frame/Calendar, marked with your loved memorable date. Price varies significantly based on custom rose types and embroidery requests.",
     media: [
       { type: "video", url: "/assets/Heart/Heart1.mp4" },
       { type: "image", url: "/assets/Heart/Heart2.jpeg" }
+    ],
+    reviews: [
+      { id: 1, user: "Ishani S.", rating: 5, comment: "The quality is incredible." }
+    ]
+  },
+  { 
+    id: "Photo PopUp", 
+    name: "Photo PopUp", 
+    priceRange: "₹2,499 - ₹4,500", 
+    category: "Calendar", 
+    rating: 5.0,
+    description: "Our signature luxury gift box. Wrapped in deep midnight velvet. Price varies significantly based on custom rose types and embroidery requests.",
+    media: [
+      { type: "video", url: "/assets/photo_popUp/photo_popUp.mp4" }
     ],
     reviews: [
       { id: 1, user: "Ishani S.", rating: 5, comment: "The velvet quality is incredible." }
