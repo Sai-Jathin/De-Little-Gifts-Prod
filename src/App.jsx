@@ -26,8 +26,7 @@ const PRODUCTS = [
     rating: 5.0,
     description: "Heart frame/Calendar, marked with your loved memorable date. Price varies significantly based on custom rose types and embroidery requests.",
     media: [
-      { type: "video", url: "/assets/Heart/Heart1.mp4" },
-      { type: "image", url: "/assets/Heart/Heart2.jpeg" }
+      { type: "image", url: "/assets/heart_calendar/heart_calendar.jpeg" }
     ],
     reviews: [
       { id: 1, user: "Ishani S.", rating: 5, comment: "The quality is incredible." }
@@ -39,7 +38,7 @@ const PRODUCTS = [
     priceRange: "₹250 - ₹350", 
     category: "Calendar", 
     rating: 5.0,
-    description: "Our signature luxury gift box. Wrapped in deep midnight velvet. Price varies significantly based on custom rose types and embroidery requests.",
+    description: "Photo PopUp is a type of greeting card which popup's your memorable moments and heartfull words.",
     media: [
       { type: "video", url: "/assets/photo_popUp/photo_popUp.mp4" }
     ],
@@ -53,12 +52,12 @@ const PRODUCTS = [
     priceRange: "₹250 - ₹500", 
     category: "Album", 
     rating: 5.0,
-    description: "Our signature luxury gift box. Wrapped in deep midnight velvet. Price varies significantly based on custom rose types and embroidery requests.",
+    description: "Heart Album looks as small box but when you open, it will make big surpise.",
     media: [
       { type: "video", url: "/assets/heart_album/heart_album.mp4" }
     ],
     reviews: [
-      { id: 1, user: "Ishani S.", rating: 5, comment: "I given it to my boyfriend and he loved it" }
+      { id: 1, user: "Ishani S.", rating: 5, comment: "Awesome" }
     ]
   }
 ];
