@@ -154,7 +154,7 @@ const CustomTicker = ({ text, topOffset }) => {
         className="flex whitespace-nowrap gap-10 items-center"
       >
         {[...Array(10)].map((_, i) => (
-          <span key={i} className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">
+          <span key={i} className="text-[10px] font-black uppercase tracking-[0.2em] text-white/50">
             {text}
           </span>
         ))}
