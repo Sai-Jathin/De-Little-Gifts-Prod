@@ -36,7 +36,7 @@ const PRODUCTS = [
     id: "Photo PopUp", 
     name: "Photo PopUp", 
     priceRange: "₹250 - ₹350", 
-    category: "Calendar", 
+    category: "Greeting Card", 
     rating: 5.0,
     description: "Photo PopUp is a type of greeting card which popup's your memorable moments and heartfull words.",
     media: [
@@ -49,12 +49,82 @@ const PRODUCTS = [
   { 
     id: "Heart Album", 
     name: "Heart Album", 
-    priceRange: "₹250 - ₹500", 
+    priceRange: "₹300 - ₹500", 
     category: "Album", 
     rating: 5.0,
     description: "Heart Album looks as small box but when you open, it will make big surpise.",
     media: [
       { type: "video", url: "/assets/heart_album/heart_album.mp4" }
+    ],
+    reviews: [
+      { id: 1, user: "Ishani S.", rating: 5, comment: "Awesome" }
+    ]
+  },
+  { 
+    id: "Burning Card", 
+    name: "Burning Card", 
+    priceRange: "₹299 - 399", 
+    category: "2026 Collection", 
+    rating: 5.0,
+    description: "Burning Card comes with customized shapes and your loved one will  be waiting to see the surpirce.",
+    media: [
+      { type: "video", url: "/assets/burning_card/burning_card.mp4" }
+    ],
+    reviews: [
+      { id: 1, user: "Ishani S.", rating: 5, comment: "Awesome" }
+    ]
+  },
+  { 
+    id: "Photo Frame", 
+    name: "Photo Frame", 
+    priceRange: "₹299 - 399", 
+    category: "Photo Frame", 
+    rating: 5.0,
+    description: "Photo Frame comes with customized shapes and your memorable moments by wishing.",
+    media: [
+      { type: "video", url: "/assets/photo_frame/photo_frame.mp4" }
+    ],
+    reviews: [
+      { id: 1, user: "Ishani S.", rating: 5, comment: "Awesome" }
+    ]
+  },
+  { 
+    id: "Gallery of memories", 
+    name: "Gallery of memories", 
+    priceRange: "₹279 - 400", 
+    category: "Album", 
+    rating: 5.0,
+    description: "Gallery of memories comes with customized quotes and images your memorable moments by images.",
+    media: [
+      { type: "video", url: "/assets/gallery_of_memories/gallery_of_memories.mp4" }
+    ],
+    reviews: [
+      { id: 1, user: "Ishani S.", rating: 5, comment: "Awesome" }
+    ]
+  },
+  { 
+    id: "3D - Frame", 
+    name: "3D - Frame", 
+    priceRange: "₹350 - 450", 
+    category: "Photo Frame", 
+    rating: 5.0,
+    description: "3D - Frame comes with photo frames actuallly looks like 3D and images can be customized",
+    media: [
+      { type: "video", url: "/assets/3d_frame/3d_frame.mp4" }
+    ],
+    reviews: [
+      { id: 1, user: "Ishani S.", rating: 5, comment: "Awesome" }
+    ]
+  },
+  { 
+    id: "Vintage Card", 
+    name: "Vintage Card", 
+    priceRange: "₹219 - 279", 
+    category: "Photo Frame", 
+    rating: 5.0,
+    description: "Vintage Card comes with your loved photos and greeting them with you hearful feelings.",
+    media: [
+      { type: "video", url: "/assets/vintage_card/vintage_card.mp4" }
     ],
     reviews: [
       { id: 1, user: "Ishani S.", rating: 5, comment: "Awesome" }
