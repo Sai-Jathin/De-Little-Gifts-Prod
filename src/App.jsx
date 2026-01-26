@@ -36,7 +36,7 @@ const PRODUCTS = [
   { 
     id: "Photo PopUp", 
     name: "Photo PopUp", 
-    priceRange: "₹2,499 - ₹4,500", 
+    priceRange: "₹250 - ₹350", 
     category: "Calendar", 
     rating: 5.0,
     description: "Our signature luxury gift box. Wrapped in deep midnight velvet. Price varies significantly based on custom rose types and embroidery requests.",
@@ -44,7 +44,21 @@ const PRODUCTS = [
       { type: "video", url: "/assets/photo_popUp/photo_popUp.mp4" }
     ],
     reviews: [
-      { id: 1, user: "Ishani S.", rating: 5, comment: "The velvet quality is incredible." }
+      { id: 1, user: "Ishani S.", rating: 5, comment: "I given it to my boyfriend and he loved it" }
+    ]
+  },
+  { 
+    id: "Heart Album", 
+    name: "Heart Album", 
+    priceRange: "₹250 - ₹500", 
+    category: "Album", 
+    rating: 5.0,
+    description: "Our signature luxury gift box. Wrapped in deep midnight velvet. Price varies significantly based on custom rose types and embroidery requests.",
+    media: [
+      { type: "video", url: "/assets/heart_album/heart_album.mp4" }
+    ],
+    reviews: [
+      { id: 1, user: "Ishani S.", rating: 5, comment: "I given it to my boyfriend and he loved it" }
     ]
   }
 ];
