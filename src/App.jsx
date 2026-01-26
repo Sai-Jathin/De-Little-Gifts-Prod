@@ -1,13 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const OWNER_PHONE = "919493456186";
+const OWNER_PHONE = "919989311081";
 
 const PRODUCTS = [
   { 
     id: "Mystery Box", 
-    name: "Mystery Box", 
-    priceRange: "₹500 - ₹3000", 
+    name: "Mystery Box (Customizable)", 
+    priceRange: "₹1000 - ₹2000", 
     category: "2026 Collection", 
     rating: 5,
     description: "Our signature luxury gift box, A hand-curated mystery box filled with artisanal surprises. Final price varies based on the size and specific craft items included inside.",
