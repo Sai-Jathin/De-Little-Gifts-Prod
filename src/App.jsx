@@ -170,7 +170,7 @@ const MINI_PRODUCTS = [
       "Vintage Card comes with your loved photos and greeting them with you hearful feelings.",
     media: [{ type: "video", url: "/assets/vintage_card/vintage_card.mp4" }],
     reviews: [{ id: 1, user: "Ishani S.", rating: 5, comment: "Awesome" }],
-  }
+  },
 ];
 
 // --- SHARED COMPONENTS ---
@@ -330,6 +330,7 @@ export default function App() {
   const [isCartOpen, setCartOpen] = useState(false);
   const [viewingProduct, setViewingProduct] = useState(null);
   const [isCheckoutOpen, setCheckoutOpen] = useState(false);
+  const [previewProduct, setPreviewProduct] = useState(null);
   const [customer, setCustomer] = useState({ name: "", mobile: "" });
 
   const productsRef = useRef(null);
@@ -377,14 +378,19 @@ export default function App() {
     )}`;
   };
 
-  const MiniProductCard = ({ product }) => (
+  const MiniProductCard = ({ product, onAdd, onPreview }) => (
     <div className="min-w-[110px] bg-[#111] border border-white/10 rounded-xl p-2 flex-shrink-0">
-      <div className="w-full h-20 rounded-lg overflow-hidden bg-zinc-900 mb-2">
+      {/* IMAGE / VIDEO (CLICK TO PREVIEW) */}
+      <div
+        className="w-full h-20 rounded-lg overflow-hidden bg-zinc-900 mb-2 cursor-pointer"
+        onClick={() => onPreview(product)}
+      >
         {product.media[0]?.type === "video" ? (
           <video
             src={product.media[0].url}
             className="w-full h-full object-cover"
             muted
+            playsInline
           />
         ) : (
           <img
@@ -393,12 +399,15 @@ export default function App() {
           />
         )}
       </div>
+
       <p className="text-[9px] font-bold truncate uppercase">{product.name}</p>
       <p className="text-red-600 text-[10px] font-black">
         {product.priceRange}
       </p>
+
+      {/* ADD BUTTON */}
       <button
-        onClick={() => handleUpdateCart(product, 1)}
+        onClick={() => onAdd(product)}
         className="mt-2 w-full bg-red-600 text-white rounded-full text-[10px] py-1 font-bold"
       >
         +
@@ -695,7 +704,12 @@ export default function App() {
                   </p>
                   <div className="flex gap-3 overflow-x-auto pb-2">
                     {MINI_PRODUCTS.map((product) => (
-                      <MiniProductCard key={product.id} product={product} />
+                      <MiniProductCard
+                        key={product.id}
+                        product={product}
+                        onAdd={(p) => handleUpdateCart(p, 1)}
+                        onPreview={(p) => setPreviewProduct(p)}
+                      />
                     ))}
                   </div>
                 </div>
