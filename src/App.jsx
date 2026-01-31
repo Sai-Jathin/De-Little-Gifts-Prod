@@ -298,7 +298,7 @@ export default function App() {
       {/* HERO SECTION */}
       <section className="pt-40 pb-16 text-center bg-gradient-to-b from-red-600/20 to-transparent">
         <h1 className="text-4xl md:text-5xl font-black text-red-600">
-          Gifts That Create Memories ❤️
+	  Gifts That Create Memories <span className="rotating-heart">❤️</span> 
         </h1>
         <p className="text-white/70 mt-4 text-sm">
           Handmade customized gifts for birthdays, anniversaries & special moments.
