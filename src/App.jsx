@@ -465,7 +465,7 @@ export default function App() {
       />
 
       {/* HERO SECTION */}
-      <section className="pt-40 pb-16 text-center bg-gradient-to-b from-red-600/20 to-transparent">
+      <section className="pt-40 pb-8 text-center bg-gradient-to-b from-red-600/20 to-transparent">
         <h1 className="text-4xl md:text-5xl font-black text-red-600">
           Gifts That Create Memories{" "}
           <motion.span
@@ -491,14 +491,15 @@ export default function App() {
       </section>
 
       {/* TRUST SECTION */}
+      {/*
       <section className="grid grid-cols-2 md:grid-cols-4 gap-4 px-6 pb-10 text-center">
         <div className="bg-white/5 p-4 rounded-xl">🚚 Fast Delivery</div>
         <div className="bg-white/5 p-4 rounded-xl">🖐 Handmade</div>
         <div className="bg-white/5 p-4 rounded-xl">💯 Custom Made</div>
         <div className="bg-white/5 p-4 rounded-xl">❤️ Loved by Couples</div>
       </section>
-
-      <main ref={productsRef} className="pt-20 pb-20">
+*/}
+      <main ref={productsRef} className="pt-12 pb-12">
         <AnimatePresence mode="wait">
           {!viewingProduct ? (
             <motion.div
@@ -560,10 +561,10 @@ export default function App() {
               animate={{ opacity: 1, x: 0 }}
               className="max-w-5xl mx-auto px-6"
             >
-              <<button
-  onClick={() => setViewingProduct(null)}
-  className="fixed top-[50px] left-6 flex items-center gap-3 bg-white/5 border border-white/10 px-6 py-3.5 rounded-full z-[500]"
->
+              <button
+                onClick={() => setViewingProduct(null)}
+                className="fixed top-[50px] left-6 flex items-center gap-3 bg-white/5 border border-white/10 px-6 py-3.5 rounded-full z-[500]"
+              >
                 <span className="text-red-600">←</span>
                 <span className="text-[10px] font-black uppercase tracking-widest">
                   Back
