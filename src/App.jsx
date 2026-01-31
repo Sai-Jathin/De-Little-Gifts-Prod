@@ -253,34 +253,6 @@ const ProductGallery = ({ media, height = "h-96" }) => {
           )}
         </motion.div>
       </AnimatePresence>
-      {media.length > 1 && (
-        <>
-          <div className="absolute inset-0 flex items-center justify-between px-4 opacity-100 lg:opacity-0 lg:group-hover/gallery:opacity-100 transition-opacity pointer-events-none">
-            <button
-              onClick={prev}
-              className="pointer-events-auto w-10 h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/10 flex items-center justify-center"
-            >
-              <span className="text-white text-sm">←</span>
-            </button>
-            <button
-              onClick={next}
-              className="pointer-events-auto w-10 h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/10 flex items-center justify-center"
-            >
-              <span className="text-white text-sm">→</span>
-            </button>
-          </div>
-          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-            {media.map((_, i) => (
-              <div
-                key={i}
-                className={`h-1 rounded-full transition-all duration-500 ${
-                  i === index ? "w-6 bg-red-600" : "w-1.5 bg-white/30"
-                }`}
-              />
-            ))}
-          </div>
-        </>
-      )}
     </div>
   );
 };
@@ -336,6 +308,37 @@ export default function App() {
       msg
     )}`;
   };
+
+  const MiniProductCard = ({ product }) => (
+    <div className="min-w-[110px] bg-[#111] border border-white/10 rounded-xl p-2 flex-shrink-0">
+      <div className="w-full h-20 rounded-lg overflow-hidden bg-zinc-900 mb-2">
+        {product.media[0]?.type === "video" ? (
+          <video
+            src={product.media[0].url}
+            className="w-full h-full object-cover"
+            muted
+          />
+        ) : (
+          <img
+            src={product.media[0].url}
+            className="w-full h-full object-cover"
+          />
+        )}
+      </div>
+      <p className="text-[9px] font-bold truncate uppercase">
+        {product.name}
+      </p>
+      <p className="text-red-600 text-[10px] font-black">
+        {product.priceRange}
+      </p>
+      <button
+        onClick={() => handleUpdateCart(product, 1)}
+        className="mt-2 w-full bg-red-600 text-white rounded-full text-[10px] py-1 font-bold"
+      >
+        +
+      </button>
+    </div>
+  );
 
   return (
     <div className="min-h-screen bg-[#050505] text-white font-['Outfit'] antialiased">
@@ -405,7 +408,7 @@ export default function App() {
           }
           className="mt-6 bg-red-600 px-10 py-4 rounded-full font-black uppercase text-xs tracking-widest"
         >
-          View Handmade Gifts
+          Explore Handmade Gifts
         </button>
       </section>
 
@@ -564,7 +567,8 @@ export default function App() {
                   ✕
                 </button>
               </div>
-              <div className="flex-1 overflow-y-auto space-y-4">
+
+              <div className="flex-1 overflow-y-auto space-y-6">
                 {cart.length === 0 ? (
                   <div className="h-full flex flex-col items-center justify-center opacity-20 uppercase text-[10px] font-black tracking-widest text-center leading-relaxed">
                     Your list <br /> is empty
@@ -617,7 +621,20 @@ export default function App() {
                     </div>
                   ))
                 )}
+
+                {/* MINI PRODUCT LIST */}
+                <div>
+                  <p className="text-[10px] uppercase tracking-widest font-black text-white/40 mb-2">
+                    Add More Gifts
+                  </p>
+                  <div className="flex gap-3 overflow-x-auto pb-2">
+                    {PRODUCTS.map((product) => (
+                      <MiniProductCard key={product.id} product={product} />
+                    ))}
+                  </div>
+                </div>
               </div>
+
               {cart.length > 0 && (
                 <div className="pt-8 border-t border-white/5 mt-6">
                   <p className="text-[10px] text-white/40 uppercase tracking-widest mb-6 text-center italic">
