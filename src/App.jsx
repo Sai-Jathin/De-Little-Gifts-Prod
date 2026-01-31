@@ -563,7 +563,7 @@ export default function App() {
             >
               <button
                 onClick={() => setViewingProduct(null)}
-                className="fixed top-[50px] left-6 flex items-center gap-3 bg-white/5 border border-white/10 px-6 py-3.5 rounded-full z-[500]"
+                className="fixed top-[150px] left-6 flex items-center gap-3 bg-white/5 border border-white/10 px-6 py-3.5 rounded-full z-[500]"
               >
                 <span className="text-red-600">←</span>
                 <span className="text-[10px] font-black uppercase tracking-widest">
