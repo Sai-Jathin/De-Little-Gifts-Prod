@@ -134,23 +134,43 @@ const PRODUCTS = [
 ];
 const MINI_PRODUCTS = [
   {
-    id: "Keychain",
-    name: "Photo Keychain",
-    priceRange: "₹299 - ₹499",
-    media: [{ type: "image", url: "/assets/mini/keychain.jpg" }],
+    id: "Gallery of memories",
+    name: "Gallery of memories",
+    priceRange: "₹279 - 400",
+    category: "Album",
+    rating: 5.0,
+    description:
+      "Gallery of memories comes with customized quotes and images your memorable moments by images.",
+    media: [
+      {
+        type: "video",
+        url: "/assets/gallery_of_memories/gallery_of_memories.mp4",
+      },
+    ],
+    reviews: [{ id: 1, user: "Ishani S.", rating: 5, comment: "Awesome" }],
   },
   {
-    id: "Mug",
-    name: "Magic Mug",
-    priceRange: "₹499 - ₹699",
-    media: [{ type: "image", url: "/assets/mini/mug.jpg" }],
+    id: "3D - Frame",
+    name: "3D - Frame",
+    priceRange: "₹350 - 450",
+    category: "Photo Frame",
+    rating: 5.0,
+    description:
+      "3D - Frame comes with photo frames actuallly looks like 3D and images can be customized",
+    media: [{ type: "video", url: "/assets/3d_frame/3d_frame.mp4" }],
+    reviews: [{ id: 1, user: "Ishani S.", rating: 5, comment: "Awesome" }],
   },
   {
-    id: "Frame",
-    name: "Photo Frame",
-    priceRange: "₹699 - ₹999",
-    media: [{ type: "image", url: "/assets/mini/frame.jpg" }],
-  },
+    id: "Vintage Card",
+    name: "Vintage Card",
+    priceRange: "₹219 - 279",
+    category: "Photo Frame",
+    rating: 5.0,
+    description:
+      "Vintage Card comes with your loved photos and greeting them with you hearful feelings.",
+    media: [{ type: "video", url: "/assets/vintage_card/vintage_card.mp4" }],
+    reviews: [{ id: 1, user: "Ishani S.", rating: 5, comment: "Awesome" }],
+  }
 ];
 
 // --- SHARED COMPONENTS ---
