@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import './App.css';
+import { motion } from "framer-motion";
 
 
 const OWNER_PHONE = "919989311081";
@@ -300,8 +300,11 @@ export default function App() {
       {/* HERO SECTION */}
       <section className="pt-40 pb-16 text-center bg-gradient-to-b from-red-600/20 to-transparent">
         <h1 className="text-4xl md:text-5xl font-black text-red-600">
-	  Gifts That Create Memories <span className="heart-spin">❤️</span>
-        </h1>
+  Gifts That Create Memories{" "}
+  <motion.span animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 2, ease: "linear" }} style={{ display: "inline-block" }} >
+    ❤️
+  </motion.span>
+</h1>
         <p className="text-white/70 mt-4 text-sm">
           Handmade customized gifts for birthdays, anniversaries & special moments.
         </p>
