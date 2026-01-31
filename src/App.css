@@ -41,14 +41,4 @@
   color: #888;
 }
 
-/* ❤️ Heartbeat Animation */
-@keyframes heart-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-.heart-spin {
-  display: inline-block;
-  animation: heart-spin 2s linear infinite;
-}
 
