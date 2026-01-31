@@ -293,7 +293,31 @@ export default function App() {
       {/* GLASSY SCROLLING TICKERS */}
       <CustomTicker topOffset="112px" text="✨ Price varies based on customization • Handmade with love" />
 
-      <main className="pt-52 pb-20">
+      {/* HERO SECTION (NEW) */}
+      <section className="pt-40 pb-20 text-center bg-gradient-to-b from-red-600/20 to-transparent">
+        <h1 className="text-4xl md:text-5xl font-black text-red-600">
+          Gifts That Create Memories ❤️
+        </h1>
+        <p className="text-white/70 mt-4 text-sm">
+          Handmade customized gifts for birthdays, anniversaries & special moments.
+        </p>
+        <button 
+          onClick={() => window.scrollTo({ top: 500, behavior: "smooth" })}
+          className="mt-6 bg-red-600 px-10 py-4 rounded-full font-black uppercase text-xs tracking-widest"
+        >
+          Explore Gifts
+        </button>
+      </section>
+
+      {/* TRUST SECTION (NEW) */}
+      <section className="grid grid-cols-2 md:grid-cols-4 gap-4 px-6 pb-10 text-center">
+        <div className="bg-white/5 p-4 rounded-xl">🚚 Fast Delivery</div>
+        <div className="bg-white/5 p-4 rounded-xl">🖐 Handmade</div>
+        <div className="bg-white/5 p-4 rounded-xl">💯 Custom Made</div>
+        <div className="bg-white/5 p-4 rounded-xl">❤️ Loved by Couples</div>
+      </section>
+
+      <main className="pt-20 pb-20">
         <AnimatePresence mode="wait">
           {!viewingProduct ? (
             <motion.div key="grid" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="px-4 max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-6">
@@ -351,7 +375,7 @@ export default function App() {
         </AnimatePresence>
       </main>
 
-      {/* INQUIRY DRAWER (NO SUBTOTALS) */}
+      {/* INQUIRY DRAWER */}
       <AnimatePresence>
         {isCartOpen && (
           <>
