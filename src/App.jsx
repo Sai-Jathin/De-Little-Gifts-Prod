@@ -388,8 +388,8 @@ export default function App() {
         <h1 className="text-4xl md:text-5xl font-black text-red-600">
           Gifts That Create Memories{" "}
           <motion.span
-            animate={{ rotate: 360 }}
-            transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
+            animate={{ scale: [1, 1.3, 1] }}
+            transition={{ repeat: Infinity, duration: 1, ease: "easeInOut" }}
             style={{ display: "inline-block" }}
           >
             ❤️
