@@ -334,7 +334,42 @@ export default function App() {
   const [customer, setCustomer] = useState({ name: "", mobile: "" });
 
   const productsRef = useRef(null);
+  // -------------------------------
+  // EXIT CONFIRMATION (BACK / CLOSE / REFRESH)
+  // -------------------------------
+  useEffect(() => {
+    // Browser tab close, refresh, back
+    const handleBeforeUnload = (e) => {
+      if (cart.length > 0) {
+        e.preventDefault();
+        e.returnValue = ""; // Required for Chrome
+      }
+    };
 
+    // Mobile hardware back (popstate)
+    const handlePopState = (e) => {
+      if (
+        cart.length > 0 &&
+        !window.confirm(
+          "You have items in your inquiry. Are you sure you want to leave?"
+        )
+      ) {
+        window.history.pushState(null, null, window.location.href); // prevent going back
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    window.addEventListener("popstate", handlePopState);
+
+    // Push initial state to catch back button
+    window.history.pushState(null, null, window.location.href);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [cart]);
+  // ------------------------------
   useEffect(() => {
     const saved = localStorage.getItem("midnight_cart");
     if (saved) setCart(JSON.parse(saved));
