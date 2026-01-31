@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import './App.css';
+
 
 const OWNER_PHONE = "919989311081";
 
