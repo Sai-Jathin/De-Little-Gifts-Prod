@@ -558,14 +558,14 @@ export default function App() {
               key="product-page"
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="max-w-5xl mx-auto px-6 relative"
+              className="max-w-5xl mx-auto px-6"
             >
-              <button
-                onClick={() => setViewingProduct(null)}
-                className="absolute top-[40px] left-4 z-[400] flex items-center gap-3 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full shadow-lg"
-              >
-                <span className="text-red-600 text-lg font-black">←</span>
-                <span className="text-[10px] font-black uppercase tracking-widest text-white/80">
+              <<button
+  onClick={() => setViewingProduct(null)}
+  className="fixed top-[50px] left-6 flex items-center gap-3 bg-white/5 border border-white/10 px-6 py-3.5 rounded-full z-[500]"
+>
+                <span className="text-red-600">←</span>
+                <span className="text-[10px] font-black uppercase tracking-widest">
                   Back
                 </span>
               </button>
