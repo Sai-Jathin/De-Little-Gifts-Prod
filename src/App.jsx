@@ -130,7 +130,7 @@ const PRODUCTS = [
       "Vintage Card comes with your loved photos and greeting them with you hearful feelings.",
     media: [{ type: "video", url: "/assets/vintage_card/vintage_card.mp4" }],
     reviews: [{ id: 1, user: "Ishani S.", rating: 5, comment: "Awesome" }],
-  }
+  },
 ];
 const MINI_PRODUCTS = [
   {
@@ -170,7 +170,7 @@ const MINI_PRODUCTS = [
       "Vintage Card comes with your loved photos and greeting them with you hearful feelings.",
     media: [{ type: "video", url: "/assets/vintage_card/vintage_card.mp4" }],
     reviews: [{ id: 1, user: "Ishani S.", rating: 5, comment: "Awesome" }],
-  }
+  },
 ];
 
 // --- SHARED COMPONENTS ---
@@ -783,6 +783,76 @@ export default function App() {
                   Send Inquiry ➔
                 </button>
               </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+      {/* MINI PRODUCT PREVIEW MODAL */}
+      <AnimatePresence>
+        {previewProduct && (
+          <div className="fixed inset-0 z-[300] flex items-center justify-center p-6">
+            {/* BACKDROP */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setPreviewProduct(null)}
+              className="fixed inset-0 bg-black/90 backdrop-blur-sm"
+            />
+
+            {/* MODAL */}
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.8, opacity: 0 }}
+              className="relative bg-[#111] p-6 rounded-[2rem] w-full max-w-sm border border-white/10 shadow-2xl z-[310]"
+            >
+              <button
+                onClick={() => setPreviewProduct(null)}
+                className="absolute top-3 right-3 bg-white/10 w-8 h-8 rounded-full flex items-center justify-center"
+              >
+                ✕
+              </button>
+
+              <div className="w-full h-64 rounded-xl overflow-hidden bg-zinc-900 mb-4">
+                {previewProduct.media[0]?.type === "video" ? (
+                  <video
+                    src={previewProduct.media[0].url}
+                    className="w-full h-full object-cover"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                  />
+                ) : (
+                  <img
+                    src={previewProduct.media[0].url}
+                    className="w-full h-full object-cover"
+                  />
+                )}
+              </div>
+
+              <h3 className="text-lg font-black uppercase mb-1">
+                {previewProduct.name}
+              </h3>
+
+              <p className="text-red-600 font-black mb-2">
+                {previewProduct.priceRange}
+              </p>
+
+              <p className="text-white/60 text-sm mb-4">
+                {previewProduct.description}
+              </p>
+
+              <button
+                onClick={() => {
+                  handleUpdateCart(previewProduct, 1);
+                  setPreviewProduct(null);
+                }}
+                className="w-full bg-red-600 py-3 rounded-full font-black uppercase text-xs tracking-widest"
+              >
+                Add to Inquiry
+              </button>
             </motion.div>
           </div>
         )}
