@@ -42,12 +42,13 @@
 }
 
 /* ❤️ Heartbeat Animation */
-@keyframes heart-beat {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.3); }
+@keyframes heart-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 .heart-spin {
   display: inline-block;
-  animation: heart-beat 1s ease-in-out infinite;
+  animation: heart-spin 2s linear infinite;
 }
+
