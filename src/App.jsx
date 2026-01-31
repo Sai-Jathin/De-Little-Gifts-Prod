@@ -130,7 +130,7 @@ const PRODUCTS = [
       "Vintage Card comes with your loved photos and greeting them with you hearful feelings.",
     media: [{ type: "video", url: "/assets/vintage_card/vintage_card.mp4" }],
     reviews: [{ id: 1, user: "Ishani S.", rating: 5, comment: "Awesome" }],
-  },
+  }
 ];
 const MINI_PRODUCTS = [
   {
@@ -170,7 +170,7 @@ const MINI_PRODUCTS = [
       "Vintage Card comes with your loved photos and greeting them with you hearful feelings.",
     media: [{ type: "video", url: "/assets/vintage_card/vintage_card.mp4" }],
     reviews: [{ id: 1, user: "Ishani S.", rating: 5, comment: "Awesome" }],
-  },
+  }
 ];
 
 // --- SHARED COMPONENTS ---
@@ -383,7 +383,10 @@ export default function App() {
       {/* IMAGE / VIDEO (CLICK TO PREVIEW) */}
       <div
         className="w-full h-20 rounded-lg overflow-hidden bg-zinc-900 mb-2 cursor-pointer"
-        onClick={() => onPreview(product)}
+        onClick={(e) => {
+          e.stopPropagation();
+          onPreview(product);
+        }}
       >
         {product.media[0]?.type === "video" ? (
           <video
