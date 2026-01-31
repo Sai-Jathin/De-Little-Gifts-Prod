@@ -132,6 +132,26 @@ const PRODUCTS = [
     reviews: [{ id: 1, user: "Ishani S.", rating: 5, comment: "Awesome" }],
   },
 ];
+const MINI_PRODUCTS = [
+  {
+    id: "Keychain",
+    name: "Photo Keychain",
+    priceRange: "₹299 - ₹499",
+    media: [{ type: "image", url: "/assets/mini/keychain.jpg" }],
+  },
+  {
+    id: "Mug",
+    name: "Magic Mug",
+    priceRange: "₹499 - ₹699",
+    media: [{ type: "image", url: "/assets/mini/mug.jpg" }],
+  },
+  {
+    id: "Frame",
+    name: "Photo Frame",
+    priceRange: "₹699 - ₹999",
+    media: [{ type: "image", url: "/assets/mini/frame.jpg" }],
+  },
+];
 
 // --- SHARED COMPONENTS ---
 
@@ -253,6 +273,34 @@ const ProductGallery = ({ media, height = "h-96" }) => {
           )}
         </motion.div>
       </AnimatePresence>
+      {media.length > 1 && (
+        <>
+          <div className="absolute inset-0 flex items-center justify-between px-4 opacity-100 lg:opacity-0 lg:group-hover/gallery:opacity-100 transition-opacity pointer-events-none">
+            <button
+              onClick={prev}
+              className="pointer-events-auto w-10 h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/10 flex items-center justify-center"
+            >
+              <span className="text-white text-sm">←</span>
+            </button>
+            <button
+              onClick={next}
+              className="pointer-events-auto w-10 h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/10 flex items-center justify-center"
+            >
+              <span className="text-white text-sm">→</span>
+            </button>
+          </div>
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+            {media.map((_, i) => (
+              <div
+                key={i}
+                className={`h-1 rounded-full transition-all duration-500 ${
+                  i === index ? "w-6 bg-red-600" : "w-1.5 bg-white/30"
+                }`}
+              />
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 };
@@ -325,9 +373,7 @@ export default function App() {
           />
         )}
       </div>
-      <p className="text-[9px] font-bold truncate uppercase">
-        {product.name}
-      </p>
+      <p className="text-[9px] font-bold truncate uppercase">{product.name}</p>
       <p className="text-red-600 text-[10px] font-black">
         {product.priceRange}
       </p>
@@ -628,7 +674,7 @@ export default function App() {
                     Add More Gifts
                   </p>
                   <div className="flex gap-3 overflow-x-auto pb-2">
-                    {PRODUCTS.map((product) => (
+                    {MINI_PRODUCTS.map((product) => (
                       <MiniProductCard key={product.id} product={product} />
                     ))}
                   </div>
