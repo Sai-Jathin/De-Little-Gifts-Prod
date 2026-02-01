@@ -25,13 +25,14 @@ const PRODUCTS = [
   {
     id: "Heart frame/Calendar",
     name: "Heart frame/Calendar",
-    priceRange: "₹250 - ₹500",
+    priceRange: "₹300",
     category: "Calendar",
     rating: 5.0,
     description:
       "Heart frame/Calendar, marked with your loved memorable date. Price varies significantly based on custom rose types and embroidery requests.",
     media: [
       { type: "image", url: "/assets/heart_calendar/heart_calendar.jpeg" },
+      { type: "video", url: "/assets/heart_calendar/heart_calendar.mp4" }
     ],
     reviews: [
       {
@@ -45,7 +46,7 @@ const PRODUCTS = [
   {
     id: "Photo PopUp",
     name: "Photo PopUp",
-    priceRange: "₹250 - ₹350",
+    priceRange: "₹350",
     category: "Greeting Card",
     rating: 5.0,
     description:
@@ -63,7 +64,7 @@ const PRODUCTS = [
   {
     id: "Heart Album",
     name: "Heart Album",
-    priceRange: "₹300 - ₹500",
+    priceRange: "₹300",
     category: "Album",
     rating: 5.0,
     description:
@@ -74,7 +75,7 @@ const PRODUCTS = [
   {
     id: "Burning Card",
     name: "Burning Card",
-    priceRange: "₹299 - 399",
+    priceRange: "₹350",
     category: "2026 Collection",
     rating: 5.0,
     description:
@@ -85,7 +86,7 @@ const PRODUCTS = [
   {
     id: "Photo Frame",
     name: "Photo Frame",
-    priceRange: "₹299 - 399",
+    priceRange: "₹300",
     category: "Photo Frame",
     rating: 5.0,
     description:
@@ -96,7 +97,7 @@ const PRODUCTS = [
   {
     id: "Gallery of memories",
     name: "Gallery of memories",
-    priceRange: "₹279 - 400",
+    priceRange: "₹350",
     category: "Album",
     rating: 5.0,
     description:
@@ -112,7 +113,7 @@ const PRODUCTS = [
   {
     id: "3D - Frame",
     name: "3D - Frame",
-    priceRange: "₹350 - 450",
+    priceRange: "₹400",
     category: "Photo Frame",
     rating: 5.0,
     description:
@@ -123,7 +124,7 @@ const PRODUCTS = [
   {
     id: "Vintage Card",
     name: "Vintage Card",
-    priceRange: "₹219 - 279",
+    priceRange: "₹280",
     category: "Photo Frame",
     rating: 5.0,
     description:
@@ -136,7 +137,7 @@ const MINI_PRODUCTS = [
   {
     id: "Gallery of memories",
     name: "Gallery of memories",
-    priceRange: "₹279 - 400",
+    priceRange: "₹350",
     category: "Album",
     rating: 5.0,
     description:
@@ -152,7 +153,7 @@ const MINI_PRODUCTS = [
   {
     id: "3D - Frame",
     name: "3D - Frame",
-    priceRange: "₹350 - 450",
+    priceRange: "₹400",
     category: "Photo Frame",
     rating: 5.0,
     description:
@@ -163,7 +164,7 @@ const MINI_PRODUCTS = [
   {
     id: "Vintage Card",
     name: "Vintage Card",
-    priceRange: "₹219 - 279",
+    priceRange: "₹280",
     category: "Photo Frame",
     rating: 5.0,
     description:
@@ -512,7 +513,7 @@ export default function App() {
           </motion.span>
         </h1>
         <p className="text-white/70 mt-4 text-sm">
-          Handmade customized gifts for birthdays, anniversaries & special
+          Handmade customized gifts for birthdays, anniversary & special
           moments.
         </p>
         <button
