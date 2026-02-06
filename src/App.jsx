@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Routes, Route, useNavigate, useParams } from "react-router-dom";
+
 
 const OWNER_PHONE = "919989311081";
 
@@ -9,6 +11,7 @@ const PRODUCTS = [
     name: "Mystery Box (Customizable)",
     priceRange: "₹1000 - ₹2000",
     category: "2026 Collection",
+    occasions: ["Birthday", "Anniversary", "Valentine"],
     rating: 5,
     description:
       "Our signature luxury gift box, A hand-curated mystery box filled with artisanal surprises. Final price varies based on the size and specific craft items included inside.",
@@ -27,6 +30,7 @@ const PRODUCTS = [
     name: "Heart frame/Calendar",
     priceRange: "₹300",
     category: "Calendar",
+	occasions: ["Birthday", "Anniversary", "Valentine"],
     rating: 5.0,
     description:
       "Heart frame/Calendar, marked with your loved memorable date. Price varies significantly based on custom rose types and embroidery requests.",
@@ -48,6 +52,7 @@ const PRODUCTS = [
     name: "Photo PopUp",
     priceRange: "₹350",
     category: "Greeting Card",
+	occasions: ["Birthday", "Anniversary", "Valentine"],
     rating: 5.0,
     description:
       "Photo PopUp is a type of greeting card which popup's your memorable moments and heartfull words.",
@@ -59,6 +64,12 @@ const PRODUCTS = [
         rating: 5,
         comment: "I given it to my boyfriend and he loved it",
       },
+	  {
+        id: 1,
+        user: "vinay S.",
+        rating: 5,
+        comment: "I given it to my boyfriend and he loved it",
+      },
     ],
   },
   {
@@ -66,6 +77,7 @@ const PRODUCTS = [
     name: "Heart Album",
     priceRange: "₹300",
     category: "Album",
+	occasions: ["Birthday", "Anniversary", "Valentine"],
     rating: 5.0,
     description:
       "Heart Album looks as small box but when you open, it will make big surpise.",
@@ -77,6 +89,7 @@ const PRODUCTS = [
     name: "Burning Card",
     priceRange: "₹350",
     category: "2026 Collection",
+	occasions: ["Birthday", "Anniversary", "Valentine"],
     rating: 5.0,
     description:
       "Burning Card comes with customized shapes and your loved one will  be waiting to see the surpirce.",
@@ -88,6 +101,7 @@ const PRODUCTS = [
     name: "Photo Frame",
     priceRange: "₹300",
     category: "Photo Frame",
+	occasions: ["Birthday", "Anniversary", "Valentine"],
     rating: 5.0,
     description:
       "Photo Frame comes with customized shapes and your memorable moments by wishing.",
@@ -99,6 +113,7 @@ const PRODUCTS = [
     name: "Gallery of memories",
     priceRange: "₹350",
     category: "Album",
+	occasions: ["Birthday", "Anniversary", "Valentine"],
     rating: 5.0,
     description:
       "Gallery of memories comes with customized quotes and images your memorable moments by images.",
@@ -115,6 +130,7 @@ const PRODUCTS = [
     name: "3D - Frame",
     priceRange: "₹400",
     category: "Photo Frame",
+	occasions: ["Birthday", "Anniversary", "Valentine"],
     rating: 5.0,
     description:
       "3D - Frame comes with photo frames actuallly looks like 3D and images can be customized",
@@ -126,6 +142,7 @@ const PRODUCTS = [
     name: "Vintage Card",
     priceRange: "₹280",
     category: "Photo Frame",
+	occasions: ["Birthday", "Anniversary", "Valentine"],
     rating: 5.0,
     description:
       "Vintage Card comes with your loved photos and greeting them with you hearful feelings.",
@@ -139,6 +156,7 @@ const MINI_PRODUCTS = [
     name: "Gallery of memories",
     priceRange: "₹350",
     category: "Album",
+	occasions: ["Birthday", "Anniversary", "Valentine"],
     rating: 5.0,
     description:
       "Gallery of memories comes with customized quotes and images your memorable moments by images.",
@@ -155,6 +173,7 @@ const MINI_PRODUCTS = [
     name: "3D - Frame",
     priceRange: "₹400",
     category: "Photo Frame",
+	occasions: ["Birthday", "Anniversary", "Valentine"],
     rating: 5.0,
     description:
       "3D - Frame comes with photo frames actuallly looks like 3D and images can be customized",
@@ -166,12 +185,31 @@ const MINI_PRODUCTS = [
     name: "Vintage Card",
     priceRange: "₹280",
     category: "Photo Frame",
+	occasions: ["Birthday", "Anniversary", "Valentine"], 
     rating: 5.0,
     description:
       "Vintage Card comes with your loved photos and greeting them with you hearful feelings.",
     media: [{ type: "video", url: "/assets/vintage_card/vintage_card.mp4" }],
     reviews: [{ id: 1, user: "Ishani S.", rating: 5, comment: "Awesome" }],
   },
+];
+const FAQS = [
+  {
+    q: "Is the gift fully customizable?",
+    a: "Yes ❤️ Every gift can be customized based on occasion, message, photos, and design. Final pricing depends on customization."
+  },
+  {
+    q: "How long does delivery take?",
+    a: "Standard delivery takes 3–6 working days. Express delivery may be available on request."
+  },
+  {
+    q: "Will I get a preview before making it?",
+    a: "Yes. We discuss everything on WhatsApp and share a preview before finalizing."
+  },
+  {
+    q: "Is advance payment required?",
+    a: "Yes, advance confirmation is required once customization is finalized."
+  }
 ];
 
 // --- SHARED COMPONENTS ---
@@ -209,6 +247,77 @@ const CustomTicker = ({ text, topOffset }) => {
           </span>
         ))}
       </motion.div>
+    </div>
+  );
+};
+const FAQAccordion = () => {
+  const [openIndex, setOpenIndex] = useState(null);
+
+  return (
+    <div className="mt-16">
+      <h3 className="text-xl font-black uppercase tracking-widest text-red-600 mb-6 text-center">
+        FAQs
+      </h3>
+
+      <div className="space-y-3">
+        {FAQS.map((faq, i) => (
+          <div
+            key={i}
+            className="bg-white/5 border border-white/10 rounded-xl overflow-hidden"
+          >
+            <button
+              onClick={() => setOpenIndex(openIndex === i ? null : i)}
+              className="w-full flex justify-between items-center px-5 py-4 text-left"
+            >
+              <span className="text-sm font-bold">
+                {faq.q}
+              </span>
+              <span className="text-red-600 font-black">
+                {openIndex === i ? "−" : "+"}
+              </span>
+            </button>
+
+            <AnimatePresence>
+              {openIndex === i && (
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  className="px-5 pb-4 text-white/70 text-sm"
+                >
+                  {faq.a}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+const ReviewsSection = ({ reviews }) => {
+  if (!reviews || reviews.length === 0) return null;
+
+  return (
+    <div className="mt-10">
+      <h3 className="text-sm font-black uppercase tracking-widest text-red-600 mb-4">
+        Customer Love ❤️
+      </h3>
+
+      <div className="space-y-4">
+        {reviews.map((r) => (
+          <div
+            key={r.id}
+            className="bg-white/5 border border-white/10 p-4 rounded-xl"
+          >
+            <div className="flex items-center justify-between mb-1">
+              <p className="text-xs font-bold uppercase">{r.user}</p>
+              <Stars rating={r.rating} />
+            </div>
+            <p className="text-sm text-white/60">“{r.comment}”</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
@@ -325,11 +434,286 @@ const ProductGallery = ({ media, height = "h-96" }) => {
     </div>
   );
 };
+const slugify = (text) =>
+  text
+    .toLowerCase()
+    .replace(/ /g, "-")
+    .replace(/[^\w-]+/g, "");
+const ProductPage = ({ onAddToCart }) => {
+	
+
+  const { slug } = useParams();
+
+  const product = PRODUCTS.find(
+    (p) => slugify(p.id) === slug
+  );
+const [customization, setCustomization] = useState({
+  occasion: "",
+  message: "",
+});
+  if (!product) {
+    return (
+      <div className="pt-40 text-center text-white/40">
+        Product not found
+      </div>
+    );
+  }
+
+  return (
+    <div className="px-6 max-w-5xl mx-auto">
+      <button
+        onClick={() => window.history.back()}
+        className="mb-6 bg-black/60 border border-white/20 px-6 py-3 rounded-full"
+      >
+        ← Back
+      </button>
+
+      <div className="flex flex-col md:flex-row gap-12">
+        <div className="w-full md:w-1/2">
+          <ProductGallery
+            media={product.media}
+            height="h-[500px]"
+          />
+        </div>
+
+        <div className="w-full md:w-1/2">
+          <span className="text-red-600 text-[10px] font-black uppercase tracking-widest">
+            {product.category}
+          </span>
+
+          <h1 className="text-4xl font-black mt-2">
+            {product.name}
+          </h1>
+
+          <p className="text-3xl font-black mt-2">
+            {product.priceRange}
+          </p>
+
+          <p className="text-white/60 mt-6">
+            {product.description}
+          </p>
+		  {/* DELIVERY INFO */}
+<div className="mt-6 bg-white/5 border border-white/10 rounded-2xl p-4 space-y-2">
+  <div className="flex items-center gap-2 text-sm">
+    <span>🚚</span>
+    <span className="text-white/80">
+      Delivery in <b>3–7 working days</b>
+    </span>
+  </div>
+
+  <div className="flex items-center gap-2 text-sm">
+    <span>🎨</span>
+    <span className="text-white/80">
+      Fully handmade & customizable
+    </span>
+  </div>
+
+  <div className="flex items-center gap-2 text-sm">
+    <span>📍</span>
+    <span className="text-white/80">
+      Delivered across India
+    </span>
+  </div>
+
+  <p className="text-[11px] text-white/40 italic mt-2">
+    *Final delivery timeline may vary based on customization.*
+  </p>
+</div>
+
+			{/* CUSTOMIZATION */}
+<div className="mt-8 space-y-4">
+  {/* Occasion */}
+  <div>
+    <label className="block text-[10px] uppercase tracking-widest text-white/50 mb-1">
+      Occasion
+    </label>
+    <select
+      value={customization.occasion}
+      onChange={(e) =>
+        setCustomization({ ...customization, occasion: e.target.value })
+      }
+      className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-sm text-white outline-none focus:border-red-600"
+    >
+      <option value="">Select occasion</option>
+      <option>Birthday</option>
+      <option>Anniversary</option>
+      <option>Valentine</option>
+      <option>Proposal</option>
+      <option>Other</option>
+    </select>
+  </div>
+
+  {/* Message */}
+  <div>
+    <label className="block text-[10px] uppercase tracking-widest text-white/50 mb-1">
+      Message on Gift
+    </label>
+    <textarea
+      rows="3"
+      placeholder="Write the message you want on the gift..."
+      value={customization.message}
+      onChange={(e) =>
+        setCustomization({ ...customization, message: e.target.value })
+      }
+      className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-sm text-white outline-none focus:border-red-600 resize-none"
+    />
+  </div>
+</div>
+
+          <button
+            onClick={() =>
+  onAddToCart({
+    ...product,
+    customization,
+  })
+}
+
+            className="mt-8 w-full bg-red-600 py-5 rounded-full font-black uppercase text-xs tracking-widest"
+          >Add to Inquiry
+          </button>
+		  <FAQAccordion />
+		  {/* REVIEWS */}
+<ReviewsSection reviews={product.reviews} />
+        </div>
+      </div>
+    </div>
+  );
+};
+const HomePage = ({ productsRef, navigate }) => {
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedOccasion, setSelectedOccasion] = useState("All");
+
+  // ✅ FILTER LOGIC — MUST BE HERE (before return)
+  const filteredProducts = PRODUCTS.filter((p) => {
+    const categoryMatch =
+      selectedCategory === "All" || p.category === selectedCategory;
+
+    const occasionMatch =
+      selectedOccasion === "All" ||
+      (p.occasions && p.occasions.includes(selectedOccasion));
+
+    return categoryMatch && occasionMatch;
+  });
+
+  return (
+    <>
+      {/* HERO SECTION */}
+      <section className="pt-4 pb-4 text-center bg-gradient-to-b from-red-600/20 to-transparent">
+        <h1 className="text-4xl md:text-3xl font-black text-red-600">
+          Gifts That Create Memories{" "}
+          <motion.span
+            animate={{ scale: [1, 1.3, 1] }}
+            transition={{ repeat: Infinity, duration: 1 }}
+            style={{ display: "inline-block" }}
+          >
+            ❤️
+          </motion.span>
+        </h1>
+        <p className="text-white/70 mt-4 text-sm">
+          Handmade customized gifts for birthdays, anniversary & special moments.
+        </p>
+        <button
+          onClick={() =>
+            productsRef.current.scrollIntoView({ behavior: "smooth" })
+          }
+          className="mt-6 bg-red-600 px-10 py-4 rounded-full font-black uppercase text-xs tracking-widest"
+        >
+          Explore Handmade Gifts
+        </button>
+      </section>
+
+      {/* FILTERS */}
+      <div className="flex flex-wrap gap-4 mb-6 px-6">
+        <select
+          className="bg-black border border-red-700 text-white px-4 py-2 rounded"
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+        >
+          <option value="All">All Categories</option>
+          <option value="Album">Album</option>
+          <option value="Photo Frame">Photo Frame</option>
+          <option value="Greeting Card">Greeting Card</option>
+          <option value="Calendar">Calendar</option>
+          <option value="2026 Collection">2026 Collection</option>
+        </select>
+
+        <select
+          className="bg-black border border-red-700 text-white px-4 py-2 rounded"
+          value={selectedOccasion}
+          onChange={(e) => setSelectedOccasion(e.target.value)}
+        >
+          <option value="All">All Occasions</option>
+          <option value="Birthday">Birthday</option>
+          <option value="Anniversary">Anniversary</option>
+          <option value="Valentine">Valentine</option>
+          <option value="Proposal">Proposal</option>
+        </select>
+      </div>
+
+      {/* PRODUCT GRID */}
+      <main ref={productsRef} className="pt-12 pb-12">
+        <AnimatePresence mode="wait">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="px-4 max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-6"
+          >
+           {filteredProducts.length === 0 ? (
+  <div className="col-span-full flex flex-col items-center justify-center py-20 text-center">
+    <p className="text-red-600 text-2xl font-black mb-2">
+      No gifts found 😔
+    </p>
+    <p className="text-white/60 text-sm max-w-sm mb-6">
+      Try changing the occasion or category — we’re sure you’ll find
+      something beautiful ❤️
+    </p>
+    <button
+      onClick={() => {
+        setSelectedCategory("All");
+        setSelectedOccasion("All");
+      }}
+      className="bg-red-600 px-6 py-3 rounded-full text-xs font-black uppercase tracking-widest"
+    >
+      Reset Filters
+    </button>
+  </div>
+) : (
+  filteredProducts.map((product) => (
+    <div
+      key={product.id}
+      className="bg-[#0f0f0f] border border-white/5 p-3 rounded-[2rem] cursor-pointer"
+      onClick={() =>
+        navigate(`/product/${slugify(product.id)}`)
+      }
+    >
+      <div className="aspect-[4/5] rounded-[1.5rem] overflow-hidden mb-4 bg-zinc-900">
+        <ProductGallery media={product.media} height="h-full" />
+      </div>
+
+      <h3 className="text-[12px] font-bold uppercase truncate">
+        {product.name}
+      </h3>
+      <p className="text-red-600 font-black text-sm">
+        {product.priceRange}
+      </p>
+    </div>
+  ))
+)}
+
+          </motion.div>
+        </AnimatePresence>
+      </main>
+    </>
+  );
+};
+
+
 
 export default function App() {
+	const navigate = useNavigate();
   const [cart, setCart] = useState([]);
   const [isCartOpen, setCartOpen] = useState(false);
-  const [viewingProduct, setViewingProduct] = useState(null);
+  //const [viewingProduct, setViewingProduct] = useState(null);
   const [isCheckoutOpen, setCheckoutOpen] = useState(false);
   const [previewProduct, setPreviewProduct] = useState(null);
   const [customer, setCustomer] = useState({ name: "", mobile: "" });
@@ -400,19 +784,35 @@ export default function App() {
   const isInCart = (id) => cart.some((item) => item.id === id);
 
   const handleWhatsAppOrder = (e) => {
-    e.preventDefault();
-    let msg = `*✨ NEW CUSTOM INQUIRY - DE LITTLE GIFTS ✨*\n\n👤 *Customer:* ${customer.name}\n📞 *Mobile:* ${customer.mobile}\n\n--- *REQUESTED CRAFTS* ---\n`;
-    cart.forEach(
-      (item, i) =>
-        (msg += `${i + 1}. *${item.name}* (x${item.quantity}) - Est: ${
-          item.priceRange
-        }\n`)
-    );
-    msg += `\n💬 _I want to discuss customization and get the final pricing._`;
-    window.location.href = `https://wa.me/${OWNER_PHONE}?text=${encodeURIComponent(
-      msg
-    )}`;
-  };
+  e.preventDefault();
+
+  let msg =
+    `*✨ NEW CUSTOM INQUIRY - DE LITTLE GIFTS ✨*\n\n` +
+    `👤 *Customer:* ${customer.name}\n` +
+    `📞 *Mobile:* ${customer.mobile}\n\n` +
+    `--- *REQUESTED CRAFTS* ---\n`;
+
+  cart.forEach((item, i) => {
+    msg += `${i + 1}. *${item.name}* (x${item.quantity}) - ${item.priceRange}\n`;
+
+    if (item.customization?.occasion) {
+      msg += `   • Occasion: ${item.customization.occasion}\n`;
+    }
+
+    if (item.customization?.message) {
+      msg += `   • Message: "${item.customization.message}"\n`;
+    }
+
+    msg += `\n`;
+  });
+
+  msg += `💬 _I want to discuss customization and get the final pricing._`;
+
+  window.location.href = `https://wa.me/${OWNER_PHONE}?text=${encodeURIComponent(
+    msg
+  )}`;
+};
+
 
   const MiniProductCard = ({ product, onAdd, onPreview }) => (
     <div className="min-w-[110px] bg-[#111] border border-white/10 rounded-xl p-2 flex-shrink-0">
@@ -472,12 +872,12 @@ export default function App() {
         <div className="w-20 hidden md:block" />
         <div
           className="flex flex-col items-center flex-1 cursor-pointer"
-          onClick={() => setViewingProduct(null)}
+         onClick={() => navigate("/")}
         >
-          <h1 className="text-2xl font-black text-red-600 tracking-tighter capitalize leading-tight">
+          <h1 className="text-5xl font-black text-red-600 tracking-tighter capitalize leading-tight">
             De Little Gifts
           </h1>
-          <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/85 -mt-0.5">
+          <p className="text-[12px] font-bold uppercase tracking-[0.4em] text-white/85 -mt-0.5">
             Big Joy in Every Little Box
           </p>
         </div>
@@ -500,31 +900,7 @@ export default function App() {
         text="✨ Price varies based on customization • Handmade with love"
       />
 
-      {/* HERO SECTION */}
-      <section className="pt-40 pb-8 text-center bg-gradient-to-b from-red-600/20 to-transparent">
-        <h1 className="text-4xl md:text-5xl font-black text-red-600">
-          Gifts That Create Memories{" "}
-          <motion.span
-            animate={{ scale: [1, 1.3, 1] }}
-            transition={{ repeat: Infinity, duration: 1, ease: "easeInOut" }}
-            style={{ display: "inline-block" }}
-          >
-            ❤️
-          </motion.span>
-        </h1>
-        <p className="text-white/70 mt-4 text-sm">
-          Handmade customized gifts for birthdays, anniversary & special
-          moments.
-        </p>
-        <button
-          onClick={() =>
-            productsRef.current.scrollIntoView({ behavior: "smooth" })
-          }
-          className="mt-6 bg-red-600 px-10 py-4 rounded-full font-black uppercase text-xs tracking-widest"
-        >
-          Explore Handmade Gifts
-        </button>
-      </section>
+      
 
       {/* TRUST SECTION */}
       {/*
@@ -535,124 +911,25 @@ export default function App() {
         <div className="bg-white/5 p-4 rounded-xl">❤️ Loved by Couples</div>
       </section>
 */}
-      <main ref={productsRef} className="pt-12 pb-12">
-        <AnimatePresence mode="wait">
-          {!viewingProduct ? (
-            <motion.div
-              key="grid"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="px-4 max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-6"
-            >
-              {PRODUCTS.map((product) => (
-                <div
-                  key={product.id}
-                  className="bg-[#0f0f0f] border border-white/5 p-3 rounded-[2rem] group hover:border-white/20 transition-all cursor-pointer relative"
-                >
-                  <div
-                    className="aspect-[4/5] rounded-[1.5rem] overflow-hidden mb-4 bg-zinc-900"
-                    onClick={() => setViewingProduct(product)}
-                  >
-                    <ProductGallery media={product.media} height="h-full" />
-                  </div>
+      
+<div className="pt-[140px]">
+  <Routes>
+    <Route
+      path="/"
+      element={<HomePage productsRef={productsRef} navigate={navigate} />}
+    />
+    <Route
+      path="/product/:slug"
+      element={
+        <ProductPage
+          onAddToCart={(product) => handleUpdateCart(product, 1)}
+        />
+      }
+    />
+  </Routes>
+</div>
 
-                  <motion.button
-                    whileTap={{ scale: 0.9 }}
-                    onClick={(e) => {
-                      handleUpdateCart(product, 1, e);
-                      if (!isInCart(product.id)) setCartOpen(true);
-                    }}
-                    className={`absolute top-6 right-6 w-10 h-10 rounded-full flex items-center justify-center shadow-2xl z-30 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-all ${
-                      isInCart(product.id)
-                        ? "bg-white text-black"
-                        : "bg-red-600 text-white"
-                    }`}
-                  >
-                    <span className="text-xl font-bold">
-                      {isInCart(product.id) ? "✓" : "+"}
-                    </span>
-                  </motion.button>
 
-                  <div
-                    className="px-2"
-                    onClick={() => setViewingProduct(product)}
-                  >
-                    <h3 className="text-[12px] font-bold truncate opacity-90 uppercase tracking-widest">
-                      {product.name}
-                    </h3>
-                    <p className="text-red-600 font-black text-sm">
-                      {product.priceRange}
-                    </p>
-                    <p className="text-[8px] text-white/30 uppercase mt-1 italic">
-                      Price depends on details
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </motion.div>
-          ) : (
-            <motion.div
-              key="product-page"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="max-w-5xl mx-auto px-6"
-            >
-              <button
-                onClick={() => setViewingProduct(null)}
-                className="fixed top-[150px] left-6 flex items-center gap-3 bg-black/60 border border-white/20 px-6 py-3.5 rounded-full z-[500]"
-              >
-                <span className="text-red-600">←</span>
-                <span className="text-[10px] font-black uppercase tracking-widest">
-                  Back
-                </span>
-              </button>
-
-              <div className="flex flex-col md:flex-row gap-12">
-                <div className="w-full md:w-1/2 rounded-[2.5rem] overflow-hidden bg-[#0f0f0f]">
-                  <ProductGallery
-                    media={viewingProduct.media}
-                    height="h-[450px] md:h-[650px]"
-                  />
-                </div>
-                <div className="w-full md:w-1/2">
-                  <span className="text-red-600 text-[10px] font-black uppercase tracking-[0.4em] mb-4 block">
-                    {viewingProduct.category}
-                  </span>
-                  <h2 className="text-4xl md:text-5xl font-black italic mb-2 leading-none tracking-tighter">
-                    {viewingProduct.name}
-                  </h2>
-                  <p className="text-3xl font-black mb-1">
-                    {viewingProduct.priceRange}
-                  </p>
-                  <p className="text-[10px] text-red-600 font-bold uppercase tracking-widest mb-8 italic">
-                    Final price varies with customization
-                  </p>
-
-                  <p className="text-white/60 text-sm leading-relaxed mb-8">
-                    {viewingProduct.description}
-                  </p>
-
-                  <button
-                    onClick={() => {
-                      handleUpdateCart(viewingProduct, 1);
-                      setCartOpen(true);
-                    }}
-                    className={`w-full py-5 rounded-full font-black uppercase text-xs tracking-widest transition-all ${
-                      isInCart(viewingProduct.id)
-                        ? "bg-white text-black"
-                        : "bg-red-600 text-white"
-                    }`}
-                  >
-                    {isInCart(viewingProduct.id)
-                      ? "✓ Added to Inquiry"
-                      : "Add to Inquiry List"}
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </main>
 
       {/* INQUIRY DRAWER */}
       <AnimatePresence>
@@ -712,6 +989,18 @@ export default function App() {
                         <p className="text-[10px] font-bold truncate uppercase">
                           {item.name}
                         </p>
+						{item.customization?.occasion && (
+  <p className="text-[9px] text-white/40">
+    Occasion: {item.customization.occasion}
+  </p>
+)}
+
+{item.customization?.message && (
+  <p className="text-[9px] text-white/40 line-clamp-2">
+    “{item.customization.message}”
+  </p>
+)}
+
                         <p className="text-red-600 font-black text-xs">
                           {item.priceRange}
                         </p>
@@ -894,6 +1183,20 @@ export default function App() {
           </div>
         )}
       </AnimatePresence>
+	  {/* WhatsApp Floating Button */}
+<a
+  href={`https://wa.me/${OWNER_PHONE}`}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="fixed bottom-6 right-6 z-[400] w-14 h-14 bg-green-500 rounded-full flex items-center justify-center shadow-xl hover:scale-105 transition-transform"
+>
+  <img
+    src="/assets/whatsapp_logo/whatsapp_logo.png" // your WhatsApp logo
+    alt="WhatsApp"
+    className="w-8 h-8"
+  />
+</a>
+
     </div>
   );
 }
