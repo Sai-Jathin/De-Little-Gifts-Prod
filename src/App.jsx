@@ -862,31 +862,34 @@ export default function App() {
       </div>
 
       {/* NAVIGATION BAR */}
-      <nav className="fixed top-[28px] w-full z-[100] bg-[#050505]/95 backdrop-blur-xl border-b border-white/5 px-6 py-4 flex justify-between items-center">
-        <div className="w-20 hidden md:block" />
-        <div
-          className="flex flex-col items-center flex-1 cursor-pointer"
-         onClick={() => navigate("/")}
-        >
-          <h1 className="text-3xl font-black text-red-600 tracking-tighter capitalize leading-tight">
-            De Little Gifts
-          </h1>
-          <p className="text-[12px] font-bold uppercase tracking-[0.4em] text-white/85 -mt-0.5">
-            Big Joy in Every Little Box
-          </p>
-        </div>
-        <button
-          onClick={() => setCartOpen(true)}
-          className="bg-white/5 px-4 py-2 rounded-full border border-white/10 flex items-center gap-3"
-        >
-          <span className="text-[10px] font-black uppercase tracking-widest text-white/50">
-            Inquiry
-          </span>
-          <span className="bg-red-600 text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold">
-            {cart.reduce((a, c) => a + c.quantity, 0)}
-          </span>
-        </button>
-      </nav>
+      <nav className="fixed top-[28px] w-full z-[100] bg-[#050505]/95 backdrop-blur-xl border-b border-white/5 px-4 md:px-6 py-4 flex justify-between items-center">
+  {/* Left placeholder only on md+ */}
+  <div className="hidden md:block w-20" />
+
+  {/* Center logo & tagline */}
+  <div className="flex flex-col items-center flex-1 text-center cursor-pointer">
+    <h1 className="text-2xl md:text-3xl font-black text-red-600 tracking-tight md:tracking-tighter capitalize leading-tight">
+      De Little Gifts
+    </h1>
+    <p className="text-[10px] md:text-[12px] font-bold uppercase tracking-[0.3em] md:tracking-[0.4em] text-white/85 -mt-0.5">
+      Big Joy in Every Little Box
+    </p>
+  </div>
+
+  {/* Right Inquiry button */}
+  <button
+    onClick={() => setCartOpen(true)}
+    className="bg-white/5 px-4 py-2 rounded-full border border-white/10 flex items-center gap-3"
+  >
+    <span className="text-[10px] font-black uppercase tracking-widest text-white/50">
+      Inquiry
+    </span>
+    <span className="bg-red-600 text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold">
+      {cart.reduce((a, c) => a + c.quantity, 0)}
+    </span>
+  </button>
+</nav>
+
 
       {/* GLASSY SCROLLING TICKERS */}
       <CustomTicker
