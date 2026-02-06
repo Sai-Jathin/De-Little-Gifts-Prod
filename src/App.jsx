@@ -433,9 +433,7 @@ const slugify = (text) =>
     .toLowerCase()
     .replace(/ /g, "-")
     .replace(/[^\w-]+/g, "");
-const ProductPage = ({ onAddToCart }) => {
-	
-
+const ProductPage = ({ onAddToCart, cart }) => {
   const { slug } = useParams();
 
   const product = PRODUCTS.find(
@@ -554,17 +552,24 @@ const [customization, setCustomization] = useState({
   </div>
 </div>
 
-          <button
-            onClick={() =>
-  onAddToCart({
-    ...product,
-    customization,
-  })
-}
+         <div className="flex gap-4 mt-8 w-full justify-center">
+  <button
+    onClick={() =>  onAddToCart(product, -1)}
+    className="bg-black/40 w-12 h-12 rounded-full flex items-center justify-center text-red-500 font-black text-xl"
+  >
+    −
+  </button>
+  <span className="text-white font-black text-xl">
+    {cart.find((c) => c.id === product.id)?.quantity || 0}
+  </span>
+  <button
+    onClick={() =>  onAddToCart(product, 1)}
+    className="bg-red-600 w-12 h-12 rounded-full flex items-center justify-center text-white font-black text-xl"
+  >
+    ＋
+  </button>
+</div>
 
-            className="mt-8 w-full bg-red-600 py-5 rounded-full font-black uppercase text-xs tracking-widest"
-          >Add to Inquiry
-          </button>
 		  <FAQAccordion />
 		  {/* REVIEWS */}
 <ReviewsSection reviews={product.reviews} />
@@ -716,64 +721,36 @@ export default function App() {
   // -------------------------------
   // EXIT CONFIRMATION (BACK / CLOSE / REFRESH)
   // -------------------------------
-  useEffect(() => {
-    // Browser tab close, refresh, back
-    const handleBeforeUnload = (e) => {
-      if (cart.length > 0) {
-        e.preventDefault();
-        e.returnValue = ""; // Required for Chrome
-      }
-    };
 
-    // Mobile hardware back (popstate)
-    const handlePopState = (e) => {
-      if (
-        cart.length > 0 &&
-        !window.confirm(
-          "You have items in your inquiry. Are you sure you want to leave?"
+
+const handleUpdateCart = (product, delta, e) => {
+  if (e) e.stopPropagation();
+  setCart((prev) => {
+    const existing = prev.find((item) => item.id === product.id);
+
+    if (existing) {
+      // Update existing item
+      const updated = prev
+        .map((item) =>
+          item.id === product.id
+            ? { ...item, quantity: Math.max(item.quantity + delta, 0) }
+            : item
         )
-      ) {
-        window.history.pushState(null, null, window.location.href); // prevent going back
-      }
-    };
+        .filter((item) => item.quantity > 0); // remove if 0
+      return updated;
+    }
 
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    window.addEventListener("popstate", handlePopState);
-
-    // Push initial state to catch back button
-    window.history.pushState(null, null, window.location.href);
-
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-      window.removeEventListener("popstate", handlePopState);
-    };
-  }, [cart]);
-  // ------------------------------
-  useEffect(() => {
-    const saved = localStorage.getItem("midnight_cart");
-    if (saved) setCart(JSON.parse(saved));
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("midnight_cart", JSON.stringify(cart));
-  }, [cart]);
-
-  const handleUpdateCart = (product, delta, e) => {
-    if (e) e.stopPropagation();
-    setCart((prev) => {
-      const existing = prev.find((item) => item.id === product.id);
-      if (existing) {
-        return prev
-          .map((item) =>
-            item.id === product.id
-              ? { ...item, quantity: item.quantity + delta }
-              : item
-          )
-          .filter((item) => item.quantity > 0);
-      }
+    // Only add new item if delta is positive
+    if (delta > 0) {
       return [...prev, { ...product, quantity: 1 }];
-    });
-  };
+    }
+
+    // delta <= 0 and product not in cart: do nothing
+    return prev;
+  });
+};
+
+
 
   const isInCart = (id) => cart.some((item) => item.id === id);
 
@@ -839,12 +816,24 @@ export default function App() {
       </p>
 
       {/* ADD BUTTON */}
-      <button
-        onClick={() => onAdd(product)}
-        className="mt-2 w-full bg-red-600 text-white rounded-full text-[10px] py-1 font-bold"
-      >
-        +
-      </button>
+      <div className="flex gap-2 mt-2 justify-center items-center">
+  <button
+    onClick={() => onAdd(product, -1)}
+    className="bg-black/40 w-6 h-6 rounded-full flex items-center justify-center text-red-500 font-bold"
+  >
+    −
+  </button>
+  <span className="text-white font-bold text-sm">
+    {cart.find((c) => c.id === product.id)?.quantity || 0}
+  </span>
+  <button
+    onClick={() => onAdd(product, 1)}
+    className="bg-red-600 w-6 h-6 rounded-full flex items-center justify-center text-white font-bold"
+  >
+    ＋
+  </button>
+</div>
+
     </div>
   );
 
@@ -919,7 +908,8 @@ export default function App() {
       path="/product/:slug"
       element={
         <ProductPage
-          onAddToCart={(product) => handleUpdateCart(product, 1)}
+          onAddToCart={handleUpdateCart}  // pass the function directly
+		  cart={cart}   // <- pass cart here
         />
       }
     />
@@ -1031,11 +1021,11 @@ export default function App() {
                   <div className="flex gap-3 overflow-x-auto pb-2">
                     {MINI_PRODUCTS.map((product) => (
                       <MiniProductCard
-                        key={product.id}
-                        product={product}
-                        onAdd={(p) => handleUpdateCart(p, 1)}
-                        onPreview={(p) => setPreviewProduct(p)}
-                      />
+  key={product.id}
+  product={product}
+  onAdd={handleUpdateCart}  // pass directly
+  onPreview={(p) => setPreviewProduct(p)}
+/>
                     ))}
                   </div>
                 </div>
