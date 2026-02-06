@@ -63,13 +63,7 @@ const PRODUCTS = [
         user: "Ishani S.",
         rating: 5,
         comment: "I given it to my boyfriend and he loved it",
-      },
-	  {
-        id: 1,
-        user: "vinay S.",
-        rating: 5,
-        comment: "I given it to my boyfriend and he loved it",
-      },
+      }
     ],
   },
   {
@@ -874,7 +868,7 @@ export default function App() {
           className="flex flex-col items-center flex-1 cursor-pointer"
          onClick={() => navigate("/")}
         >
-          <h1 className="text-5xl font-black text-red-600 tracking-tighter capitalize leading-tight">
+          <h1 className="text-3xl font-black text-red-600 tracking-tighter capitalize leading-tight">
             De Little Gifts
           </h1>
           <p className="text-[12px] font-bold uppercase tracking-[0.4em] text-white/85 -mt-0.5">
