@@ -9,6 +9,13 @@ import {
 } from "react-router-dom";
 
 const OWNER_PHONE = "919989311081";
+const CARE_INSTRUCTIONS = [
+  "Handle with clean, dry hands to avoid smudges.",
+  "Keep away from water, moisture, and direct sunlight.",
+  "Store flat or frame to preserve shape and colors.",
+  "Avoid placing heavy objects on top of the card.",
+  "✨ Each Grify card is handmade with love—treat it like a keepsake!",
+];
 
 const PRODUCTS = [
   {
@@ -113,16 +120,16 @@ const PRODUCTS = [
   {
     id: "Swing Photo Frame",
     name: "Swing Photo Frame",
-    priceRange: "₹350",
+    priceRange: "₹649",
     category: "2026 Collection",
-    occasions: ["Birthday"],
+    occasions: ["Birthday", "Anniversary", "Valentine"],
     rating: 5.0,
     description: [
       // This line now has the highlight
       "<span class='text-red-600 font-black uppercase tracking-widest'>Personalized Swing Photo Frame</span>",
       "Make your memories come alive with this elegant Swing Photo Frame, thoughtfully designed to display your favorite photos in a unique, rotating style. Handcrafted with a smooth white finish and classy design, it adds a warm, personalized touch to any space.",
       "Whether it’s a birthday, anniversary, wedding, or simply a way to say “you’re special”, this frame makes every memory stand out beautifully.",
-      "✨ <b>Features:</b>",
+      "✨ <span class='text-red-600 font-black uppercase tracking-widest'>Features:</span>",
       "Premium handcrafted quality",
       "Swing-style rotating photo design",
       "Suitable for all occasions – birthdays, anniversaries, weddings & more",
@@ -133,26 +140,353 @@ const PRODUCTS = [
     media: [
       {
         type: "image",
-        url: "/assets/birthday_fire_card/birthday_fire_card1.webp",
+        url: "/assets/swing_photo_frame/swing_photo_frame1.webp",
       },
       {
         type: "image",
-        url: "/assets/birthday_fire_card/birthday_fire_card2.webp",
+        url: "/assets/swing_photo_frame/swing_photo_frame2.webp",
       },
       {
         type: "image",
-        url: "/assets/birthday_fire_card/birthday_fire_card3.webp",
-      },
-      {
-        type: "image",
-        url: "/assets/birthday_fire_card/birthday_fire_card4.webp",
+        url: "/assets/swing_photo_frame/swing_photo_frame3.webp",
       },
       {
         type: "video",
-        url: "/assets/birthday_fire_card/birthday_fire_card.mp4",
+        url: "/assets/swing_photo_frame/swing_photo_frame.mp4",
       },
     ],
     reviews: [{ id: 1, user: "Nagendra", rating: 5, comment: "Awesome" }],
+  },
+  {
+    id: "Wheel of Memories",
+    name: "Wheel of Memories",
+    priceRange: "₹899",
+    category: "2026 Collection",
+    occasions: ["Birthday", "Anniversary", "Valentine"],
+    rating: 5.0,
+    description: [
+      "📏 21 x 20 cm medium size",
+      "⌚ Stylish design with fine details",
+      "🎁 Great for gifting & décor",
+      "🌟 Premium quality finish",
+      "🏡 Perfect keepsake for any space",
+    ],
+    media: [
+      {
+        type: "image",
+        url: "/assets/wheel_of_memories/wheel_of_memories1.webp",
+      },
+      {
+        type: "image",
+        url: "/assets/wheel_of_memories/wheel_of_memories2.webp",
+      },
+      {
+        type: "video",
+        url: "/assets/wheel_of_memories/wheel_of_memories.mp4",
+      },
+    ],
+    reviews: [{ id: 1, user: "Nagendra", rating: 5, comment: "Awesome" }],
+  },
+  {
+    id: "The Vintage Foldbook",
+    name: "The Vintage Foldbook",
+    priceRange: "₹669",
+    category: "Vintage Vibe",
+    occasions: ["Birthday", "Anniversary", "Valentine"],
+    rating: 5.0,
+    description: [
+		"🎉 Elegant kraft-style birthday card with black ribbon bow",
+		"🎁 Unique gift box design – perfect for surprises",
+		"💌 Spacious inside for photos, messages & personal notes",
+		"🌿 Handmade with premium textured paper",
+		"✨ Ideal for birthdays, parties & special celebrations",
+    ],
+    media: [
+      {
+        type: "image",
+        url: "/assets/the_vintage_foldbook/the_vintage_foldbook1.webp",
+      },
+      {
+        type: "image",
+        url: "/assets/the_vintage_foldbook/the_vintage_foldbook2.webp",
+      },
+      {
+        type: "video",
+        url: "/assets/the_vintage_foldbook/the_vintage_foldbook.mp4",
+      },
+    ],
+    reviews: [{ id: 1, user: "Prasanth", rating: 5, comment: "Beautiful Vintage vibe" }],
+  },
+  {
+    id: "Mini Scrapebook",
+    name: "Mini Scrapebook",
+    priceRange: "₹669",
+    category: "2026 Collection",
+    occasions: ["Birthday", "Anniversary", "Valentine"],
+    rating: 5.0,
+    description: [
+		"🎉 Handmade black scrapbook with “Happy Birthday” banner design",
+		"📔 Sturdy square shape, bound with metal rings for easy page turning",
+		"✨ Ideal for storing photos, messages & memories",
+		"📏 Compact size: approx. 15 x 15 cm",
+		"🎁 Perfect keepsake gift for birthdays",
+    ],
+    media: [
+      {
+        type: "image",
+        url: "/assets/mini_scrapebook/mini_scrapebook1.webp",
+      },
+      {
+        type: "image",
+        url: "/assets/mini_scrapebook/mini_scrapebook2.webp",
+      },
+	  {
+        type: "image",
+        url: "/assets/mini_scrapebook/mini_scrapebook3.webp",
+      },
+      {
+        type: "image",
+        url: "/assets/mini_scrapebook/mini_scrapebook4.webp",
+      },
+	  {
+        type: "image",
+        url: "/assets/mini_scrapebook/mini_scrapebook5.webp",
+      },
+      {
+        type: "video",
+        url: "/assets/mini_scrapebook/mini_scrapebook.mp4",
+      },
+    ],
+    reviews: [{ id: 1, user: "Shreeya", rating: 5, comment: "Fell in love with this mini lovable book" }],
+  },
+  {
+    id: "Double Waterfall Card",
+    name: "Double Waterfall Card",
+    priceRange: "₹649",
+    category: "2026 Collection",
+    occasions: ["Birthday", "Anniversary", "Valentine"],
+    rating: 5.0,
+    description: [
+		"📐 13 x 15 cm handy size",
+		"💌 Customizable with photo/text",
+		"🎉 Perfect for birthdays & occasions",
+		"🌸 Premium quality finish",
+		"🎁 Thoughtful keepsake",
+    ],
+    media: [
+      {
+        type: "image",
+        url: "/assets/double_waterfall_card/double_waterfall_card1.webp",
+      },
+      {
+        type: "image",
+        url: "/assets/double_waterfall_card/double_waterfall_card2.webp",
+      },
+	  {
+        type: "image",
+        url: "/assets/double_waterfall_card/double_waterfall_card3.webp",
+      },
+      {
+        type: "video",
+        url: "/assets/double_waterfall_card/double_waterfall_card.mp4",
+      },
+    ],
+    reviews: [{ id: 1, user: "Lakshmi", rating: 5, comment: "Looks simple but feels like heartfull of emotions as lot of memories" }],
+  },
+  {
+    id: "Heart light Card",
+    name: "Heart light Card",
+    priceRange: "₹649",
+    category: "2026 Collection",
+    occasions: ["Birthday", "Anniversary", "Valentine","Proposal"],
+    rating: 5.0,
+    description: [
+		"📐 14.5 x 21 cm romantic card",
+		"💡 LED light-up heart design",
+		"🖼️ Personalized with couple photo",
+		"🎁 Perfect for anniversaries & gifting",
+		"❤️ Keepsake full of love & memories",
+    ],
+    media: [
+      {
+        type: "image",
+        url: "/assets/heart_light_card/heart_light_card1.webp",
+      },
+      {
+        type: "image",
+        url: "/assets/heart_light_card/heart_light_card2.webp",
+      },
+      {
+        type: "video",
+        url: "/assets/heart_light_card/heart_light_card.mp4",
+      },
+    ],
+    reviews: [{ id: 1, user: "Nikhil", rating: 5, comment: "I have given git to my wife and she loved it" }],
+  },
+  {
+    id: "Ferris Wheel Card",
+    name: "Ferris Wheel Card",
+    priceRange: "₹729",
+    category: "2026 Collection",
+    occasions: ["Birthday", "Anniversary", "Valentine","Proposal"],
+    rating: 5.0,
+    description: [
+		"🌟 Elegant handcrafted design",
+		"📏 Size: 17 x 23 cm (medium & versatile)",
+		"🎁 Ideal for gifting & décor purposes",
+		"✨ Durable & stylish finishing",
+		"🏡 Perfect for home, office, or events",
+    ],
+    media: [
+      {
+        type: "image",
+        url: "/assets/ferris_wheel_card/ferris_wheel_card1.webp",
+      },
+      {
+        type: "image",
+        url: "/assets/ferris_wheel_card/ferris_wheel_card2.webp",
+      },
+	  {
+        type: "image",
+        url: "/assets/ferris_wheel_card/ferris_wheel_card3.webp",
+      },
+      {
+        type: "video",
+        url: "/assets/ferris_wheel_card/ferris_wheel_card1.mp4",
+      },
+	  {
+        type: "video",
+        url: "/assets/ferris_wheel_card/ferris_wheel_card2.mp4",
+      },
+    ],
+    reviews: [{ id: 1, user: "Sachin", rating: 5, comment: "Unexpected, it is awesome my girl suprised" }],
+  },
+  {
+    id: "Chocolate Card",
+    name: "Chocolate Card",
+    priceRange: "₹499",
+    category: "Greeting Card",
+    occasions: ["Birthday", "Anniversary", "Valentine","Proposal"],
+    rating: 5.0,
+    description: [
+		"🌟 Elegant handcrafted design",
+		"🎁 Ideal for gifting purposes",
+		"✨ Durable & stylish finishing",
+		"🏡 Perfect for gifting",
+    ],
+    media: [
+      {
+        type: "image",
+        url: "/assets/chocolate_card/chocolate_card1.webp",
+      },
+      {
+        type: "image",
+        url: "/assets/chocolate_card/chocolate_card2.webp",
+      },
+	  {
+        type: "video",
+        url: "/assets/chocolate_card/chocolate_card.mp4",
+      },
+    ],
+    reviews: [{ id: 1, user: "Bharath", rating: 5, comment: "I have written customized with all promise notes to my wife and it was very nice" }],
+  },
+  {
+    id: "HBD Pop Box",
+    name: "HBD Pop Box",
+    priceRange: "₹499",
+    category: "Vintage Vibe",
+    occasions: ["Birthday", "Anniversary", "Valentine","Proposal"],
+    rating: 5.0,
+    description: [
+		"📐 10 x 21 cm elegant size",
+		"🎀 Wrapped with pink satin ribbon",
+		"💌 Romantic “Love” design cover",
+		"🎁 Perfect for gifting & surprises",
+		"🌸 Premium quality keepsake",
+    ],
+    media: [
+      {
+        type: "image",
+        url: "/assets/hbd_pop_box/hbd_pop_box1.webp",
+      },
+      {
+        type: "image",
+        url: "/assets/hbd_pop_box/hbd_pop_box2.webp",
+      },
+	  {
+        type: "image",
+        url: "/assets/hbd_pop_box/hbd_pop_box3.webp",
+      },
+      {
+        type: "image",
+        url: "/assets/hbd_pop_box/hbd_pop_box4.webp",
+      },
+	  {
+        type: "video",
+        url: "/assets/hbd_pop_box/hbd_pop_box.mp4",
+      },
+    ],
+    reviews: [{ id: 1, user: "Ashish", rating: 5, comment: "I have my colleague and she kept it infornt of desk, It was so good" }],
+  },
+  {
+    id: "HeartSlide Card",
+    name: "HeartSlide Card",
+    priceRange: "₹499",
+    category: "Vintage Vibe",
+    occasions: ["Birthday", "Anniversary", "Valentine","Proposal"],
+    rating: 5.0,
+    description: [
+		"💌 Romantic & Love",
+		"🎁 Perfect for gifting & surprises",
+		"🌸 Premium quality keepsake",
+    ],
+    media: [
+      {
+        type: "image",
+        url: "/assets/heartslide_card/heartslide_card1.webp",
+      },
+      {
+        type: "image",
+        url: "/assets/heartslide_card/heartslide_card2.webp",
+      },
+	  {
+        type: "video",
+        url: "/assets/heartslide_card/heartslide_card1.mp4",
+      },
+	  {
+        type: "video",
+        url: "/assets/heartslide_card/heartslide_card2.mp4",
+      },
+    ],
+    reviews: [{ id: 1, user: "Rakesh", rating: 5, comment: "I gifted it to my favoriteperson in my life and it a beautiful memory" }],
+  },
+  {
+    id: "Endless Love Box",
+    name: "Endless Love Box",
+    priceRange: "₹469",
+    category: "2026 Collection",
+    occasions: ["Birthday", "Anniversary", "Valentine","Proposal"],
+    rating: 5.0,
+    description: [
+		"💌 Romantic & Love",
+		"🎁 Perfect for gifting & surprises",
+		"🌸 Premium quality keepsake",
+    ],
+    media: [
+      {
+        type: "image",
+        url: "/assets/endless_love_box/endless_love_box1.webp",
+      },
+      {
+        type: "image",
+        url: "/assets/endless_love_box/endless_love_box2.webp",
+      },
+	  {
+        type: "video",
+        url: "/assets/endless_love_box/endless_love_box.mp4",
+      },
+    ],
+    reviews: [{ id: 1, user: "Amith", rating: 5, comment: "I gifted it to my girlfried and she loved it" }],
   },
   {
     id: "Heart Album",
@@ -223,7 +557,7 @@ const PRODUCTS = [
     id: "Vintage Card",
     name: "Vintage Card",
     priceRange: "₹280",
-    category: "Photo Frame",
+    category: "Vintage Vibe",
     occasions: ["Birthday", "Anniversary", "Valentine"],
     rating: 5.0,
     description:
@@ -295,6 +629,24 @@ const FAQS = [
 ];
 
 // --- SHARED COMPONENTS ---
+const CareInstructions = () => {
+  return (
+    <div className="mt-8 bg-white/5 border border-white/10 rounded-2xl p-5">
+      <h3 className="text-xs font-black uppercase tracking-widest text-red-600 mb-3">
+        Care Instructions
+      </h3>
+
+      <ul className="space-y-2 text-sm text-white/70">
+        {CARE_INSTRUCTIONS.map((item, index) => (
+          <li key={index} className="flex gap-2 items-start">
+            <span className="text-red-500 mt-1">•</span>
+            <span className="leading-relaxed">{item}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
 
 const Stars = ({ rating, size = "text-[10px]" }) => (
   <div className={`flex gap-0.5 ${size} text-red-600`}>
@@ -402,8 +754,19 @@ const ReviewsSection = ({ reviews }) => {
   );
 };
 
-const ProductGallery = ({ media, height = "h-96", onOpen }) => {
+const ProductGallery = ({
+  media,
+  height = "h-96",
+  activeIndex = 0,
+  onChange,
+  onOpen,
+}) => {
   const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    setIndex(activeIndex);
+  }, [activeIndex]);
+
   const [touchStart, setTouchStart] = useState(null);
   const timerRef = useRef(null);
 
@@ -419,12 +782,21 @@ const ProductGallery = ({ media, height = "h-96", onOpen }) => {
 
   const next = (e) => {
     e?.stopPropagation();
-    setIndex((prev) => (prev + 1) % media.length);
+    setIndex((prev) => {
+      const newIndex = (prev + 1) % media.length;
+      onChange?.(newIndex);
+      return newIndex;
+    });
     resetTimer();
   };
+
   const prev = (e) => {
     e?.stopPropagation();
-    setIndex((prev) => (prev - 1 + media.length) % media.length);
+    setIndex((prev) => {
+      const newIndex = (prev - 1 + media.length) % media.length;
+      onChange?.(newIndex);
+      return newIndex;
+    });
     resetTimer();
   };
 
@@ -486,7 +858,7 @@ const ProductGallery = ({ media, height = "h-96", onOpen }) => {
       </AnimatePresence>
       {media.length > 1 && (
         <>
-          <div className="absolute inset-0 flex items-center justify-between px-4 opacity-100 lg:opacity-0 lg:group-hover/gallery:opacity-100 transition-opacity pointer-events-none">
+          <div className="hidden md:flex absolute inset-0 items-center justify-between px-4 opacity-0 group-hover/gallery:opacity-100 transition-opacity pointer-events-none">
             <button
               onClick={prev}
               className="pointer-events-auto w-10 h-10 rounded-full bg-black/40 backdrop-blur-md border border-white/10 flex items-center justify-center"
@@ -698,9 +1070,14 @@ const ProductPage = ({ onAddToCart, cart, openCart }) => {
             {/* Main Display */}
             <div className="flex-1 w-full">
               <ProductGallery
-                media={[product.media[activeIndex]]}
+                media={product.media}
                 height="h-[500px]"
-                onOpen={() => setLightboxOpen(true)}
+                activeIndex={activeIndex}
+                onChange={setActiveIndex}
+                onOpen={(i) => {
+                  setActiveIndex(i);
+                  setLightboxOpen(true);
+                }}
               />
             </div>
           </div>
@@ -746,31 +1123,6 @@ const ProductPage = ({ onAddToCart, cart, openCart }) => {
           </span>
           <h1 className="text-4xl font-black mt-2">{product.name}</h1>
           <p className="text-3xl font-black mt-2">{product.priceRange}</p>
-
-          {/* Description */}
-          {typeof product.description === "string" ? (
-            <p
-              className="text-white/60 mt-6 leading-relaxed"
-              dangerouslySetInnerHTML={{ __html: product.description }}
-            />
-          ) : (
-            <div className="mt-6">
-              <h3 className="text-xs uppercase tracking-widest text-white/50 mb-3">
-                Description
-              </h3>
-              <ul className="space-y-3 text-sm text-white/80">
-                {product.description.map((point, index) => (
-                  <li key={index} className="flex gap-2 items-start">
-                    <span className="text-red-500 mt-1">•</span>
-                    <span
-                      className="leading-relaxed"
-                      dangerouslySetInnerHTML={{ __html: point }}
-                    />
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
 
           {/* Info Card */}
           <div className="mt-6 bg-white/5 border border-white/10 rounded-2xl p-4 space-y-2">
@@ -839,24 +1191,6 @@ const ProductPage = ({ onAddToCart, cart, openCart }) => {
               className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-sm text-white outline-none focus:border-red-600 resize-none"
             />
           </div>
-          {/* PHOTO INFO BOX */}
-          <div className="mt-6 p-4 bg-white/5 rounded-3xl border border-white/10">
-            <div className="flex items-center gap-3 mb-2">
-              <span className="text-lg">📸</span>
-              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-red-600">
-                Photo Personalization
-              </p>
-            </div>
-            <div className="bg-black/50 border border-red-600/20 p-3 rounded-2xl">
-              <p className="text-[11px] font-bold text-white flex items-center gap-2">
-                <span className="text-green-500">✓</span> Send via WhatsApp
-              </p>
-              <p className="text-[9px] text-white/50 mt-1 leading-relaxed">
-                No need to upload now! You can share your photos directly on
-                WhatsApp once you place this inquiry.
-              </p>
-            </div>
-          </div>
           {/* Cart Button */}
           <div className="mt-8 flex justify-center">
             {quantity === 0 ? (
@@ -889,6 +1223,51 @@ const ProductPage = ({ onAddToCart, cart, openCart }) => {
               </div>
             )}
           </div>
+          {/* Description */}
+          {typeof product.description === "string" ? (
+            <p
+              className="text-white/60 mt-6 leading-relaxed"
+              dangerouslySetInnerHTML={{ __html: product.description }}
+            />
+          ) : (
+            <div className="mt-6">
+              <h3 className="text-xs uppercase tracking-widest text-white/50 mb-3">
+                Description
+              </h3>
+              <ul className="space-y-3 text-sm text-white/80">
+                {product.description.map((point, index) => (
+                  <li key={index} className="flex gap-2 items-start">
+                    <span className="text-red-500 mt-1">•</span>
+                    <span
+                      className="leading-relaxed"
+                      dangerouslySetInnerHTML={{ __html: point }}
+                    />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {/* PHOTO INFO BOX */}
+          <div className="mt-6 p-4 bg-white/5 rounded-3xl border border-white/10">
+            <div className="flex items-center gap-3 mb-2">
+              <span className="text-lg">📸</span>
+              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-red-600">
+                Photo Personalization
+              </p>
+            </div>
+            <div className="bg-black/50 border border-red-600/20 p-3 rounded-2xl">
+              <p className="text-[11px] font-bold text-white flex items-center gap-2">
+                <span className="text-green-500">✓</span> Send via WhatsApp
+              </p>
+              <p className="text-[9px] text-white/50 mt-1 leading-relaxed">
+                No need to upload now! You can share your photos directly on
+                WhatsApp once you place this inquiry.
+              </p>
+            </div>
+          </div>
+          {/* CARE INSTRUCTIONS */}
+          <CareInstructions />
+
           <FAQAccordion />
           <ReviewsSection reviews={product.reviews} />
         </div>
@@ -936,7 +1315,11 @@ const ProductPage = ({ onAddToCart, cart, openCart }) => {
                     src={product.media[activeIndex].url}
                     controls
                     autoPlay
-                    className="max-h-[90vh] rounded-xl"
+                    muted
+                    playsInline
+                    webkit-playsinline
+                    preload="metadata"
+                    className="max-h-[90vh] rounded-xl bg-black"
                   />
                 ) : (
                   <motion.img
@@ -962,10 +1345,20 @@ const ProductPage = ({ onAddToCart, cart, openCart }) => {
                         : "border-transparent opacity-60"
                     }`}
                   >
-                    <img
-                      src={item.url}
-                      className="w-full h-full object-cover"
-                    />
+                    {item.type === "video" ? (
+                      <video
+                        src={item.url}
+                        className="w-full h-full object-cover"
+                        muted
+                        preload="metadata"
+                        playsInline
+                      />
+                    ) : (
+                      <img
+                        src={item.url}
+                        className="w-full h-full object-cover"
+                      />
+                    )}
                   </div>
                 ))}
               </div>
@@ -1044,6 +1437,8 @@ const HomePage = ({ productsRef, navigate }) => {
           <option value="Greeting Card">Greeting Card</option>
           <option value="Calendar">Calendar</option>
           <option value="2026 Collection">2026 Collection</option>
+		  <option value="Vintage Vibe">Vintage Vibe</option>
+
         </select>
 
         <select
