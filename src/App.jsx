@@ -30,6 +30,7 @@ const PRODUCTS = [
       },
     ],
   },
+
   {
     id: "Heart frame/Calendar",
     name: "Heart frame/Calendar",
@@ -72,6 +73,88 @@ const PRODUCTS = [
     ],
   },
   {
+    id: "Birthday Fire Card",
+    name: "Birthday Fire Card",
+    priceRange: "₹350",
+    category: "2026 Collection",
+    occasions: ["Birthday"],
+    rating: 5.0,
+    description: [
+      "📏 17 x 12 cm compact size",
+      "🔥 Creates stunning fire effect",
+      "🎩 Perfect for magic & pranks",
+      "♻️ Reusable with proper care",
+      "🎁 Fun gift & surprise idea",
+    ],
+    media: [
+      {
+        type: "image",
+        url: "/assets/birthday_fire_card/birthday_fire_card1.webp",
+      },
+      {
+        type: "image",
+        url: "/assets/birthday_fire_card/birthday_fire_card2.webp",
+      },
+      {
+        type: "image",
+        url: "/assets/birthday_fire_card/birthday_fire_card3.webp",
+      },
+      {
+        type: "image",
+        url: "/assets/birthday_fire_card/birthday_fire_card4.webp",
+      },
+      {
+        type: "video",
+        url: "/assets/birthday_fire_card/birthday_fire_card.mp4",
+      },
+    ],
+    reviews: [{ id: 1, user: "Nagendra", rating: 5, comment: "Awesome" }],
+  },
+  {
+    id: "Swing Photo Frame",
+    name: "Swing Photo Frame",
+    priceRange: "₹350",
+    category: "2026 Collection",
+    occasions: ["Birthday"],
+    rating: 5.0,
+    description: [
+      // This line now has the highlight
+      "<span class='text-red-600 font-black uppercase tracking-widest'>Personalized Swing Photo Frame</span>",
+      "Make your memories come alive with this elegant Swing Photo Frame, thoughtfully designed to display your favorite photos in a unique, rotating style. Handcrafted with a smooth white finish and classy design, it adds a warm, personalized touch to any space.",
+      "Whether it’s a birthday, anniversary, wedding, or simply a way to say “you’re special”, this frame makes every memory stand out beautifully.",
+      "✨ <b>Features:</b>",
+      "Premium handcrafted quality",
+      "Swing-style rotating photo design",
+      "Suitable for all occasions – birthdays, anniversaries, weddings & more",
+      "Elegant white finish with modern typography",
+      "Perfect for home décor or thoughtful gifting",
+      "Celebrate moments that matter with a frame that moves — just like your memories!",
+    ],
+    media: [
+      {
+        type: "image",
+        url: "/assets/birthday_fire_card/birthday_fire_card1.webp",
+      },
+      {
+        type: "image",
+        url: "/assets/birthday_fire_card/birthday_fire_card2.webp",
+      },
+      {
+        type: "image",
+        url: "/assets/birthday_fire_card/birthday_fire_card3.webp",
+      },
+      {
+        type: "image",
+        url: "/assets/birthday_fire_card/birthday_fire_card4.webp",
+      },
+      {
+        type: "video",
+        url: "/assets/birthday_fire_card/birthday_fire_card.mp4",
+      },
+    ],
+    reviews: [{ id: 1, user: "Nagendra", rating: 5, comment: "Awesome" }],
+  },
+  {
     id: "Heart Album",
     name: "Heart Album",
     priceRange: "₹300",
@@ -85,7 +168,7 @@ const PRODUCTS = [
   },
   {
     id: "Burning Card",
-    name: "Burning Card",
+    name: "Burning Card (Heart Shape)",
     priceRange: "₹350",
     category: "2026 Collection",
     occasions: ["Birthday", "Anniversary", "Valentine"],
@@ -467,6 +550,18 @@ const ProductPage = ({ onAddToCart, cart, openCart }) => {
     occasion: "",
     message: "",
   });
+  const thumbnailsRef = useRef([]);
+
+  useEffect(() => {
+    if (thumbnailsRef.current[activeIndex]) {
+      thumbnailsRef.current[activeIndex].scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+        inline: "center",
+      });
+    }
+  }, [activeIndex]);
+
   useEffect(() => {
     if (!lightboxOpen) return;
 
@@ -487,20 +582,23 @@ const ProductPage = ({ onAddToCart, cart, openCart }) => {
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
   }, [lightboxOpen, product.media.length]);
+
   useEffect(() => {
     setZoom(1);
   }, [activeIndex]);
+
   useEffect(() => {
     if (pincode && deliveryInfo) return;
   }, []);
-useEffect(() => {
-  if (pincode.length === 6) {
-    checkDeliveryTimeline();
-  }
-}, [pincode]);
+
+  useEffect(() => {
+    if (pincode.length === 6) {
+      checkDeliveryTimeline();
+    }
+  }, [pincode]);
 
   const checkDeliveryTimeline = async () => {
-	   if (checking) return;
+    if (checking) return;
     if (pincode.length !== 6) {
       setDeliveryInfo("Please enter a valid 6-digit pincode");
       return;
@@ -508,7 +606,6 @@ useEffect(() => {
 
     try {
       setChecking(true);
-
       const res = await fetch(
         `https://api.postalpincode.in/pincode/${pincode}`
       );
@@ -523,20 +620,12 @@ useEffect(() => {
       const city = postOffice.District;
       const state = postOffice.State;
 
-      // 🕒 Delivery estimate (simple logic – can expand later)
       let timeline = "3–5 working days";
-      if (
-        state === "Kerala" ||
-        state === "Tamil Nadu" ||
-        state === "Karnataka" ||
-        state === "Telangana"
-      ) {
+      if (["Kerala", "Tamil Nadu", "Karnataka", "Telangana"].includes(state)) {
         timeline = "2–4 working days";
       }
 
       const infoText = `📍 Delivery available in ${city}, ${state}. Estimated delivery: ${timeline}.`;
-
-      // SAVE EVERYTHING
       setDeliveryInfo(infoText);
       setLocationInfo({ city, state, timeline });
 
@@ -560,342 +649,34 @@ useEffect(() => {
   }
 
   return (
-    <div className="px-6 max-w-5xl mx-auto">
-      <button
+    <div className="px-6 max-w-6xl mx-auto pt-10">
+      {/*<button
         onClick={() => window.history.back()}
         className="mb-6 bg-black/60 border border-white/20 px-6 py-3 rounded-full"
       >
         ← Back
       </button>
-
-      <div className="flex flex-col md:flex-row gap-12">
-        <div className="w-full md:w-1/2">
-          <ProductGallery
-            media={product.media}
-            height="h-[500px]"
-            onOpen={(i) => {
-              setActiveIndex(i);
-              setLightboxOpen(true);
-            }}
-          />
-        </div>
-
-        <div className="w-full md:w-1/2">
-          <span className="text-red-600 text-[10px] font-black uppercase tracking-widest">
-            {product.category}
-          </span>
-
-          <h1 className="text-4xl font-black mt-2">{product.name}</h1>
-
-          <p className="text-3xl font-black mt-2">{product.priceRange}</p>
-
-          <p className="text-white/60 mt-6">{product.description}</p>
-          {/* DELIVERY INFO */}
-          <div className="mt-6 bg-white/5 border border-white/10 rounded-2xl p-4 space-y-2">
-            <div className="flex items-center gap-2 text-sm">
-              <span>🚚</span>
-              <span className="text-white/80">
-                Delivery in <b>3–7 working days</b>
-              </span>
-            </div>
-
-            <div className="flex items-center gap-2 text-sm">
-              <span>🎨</span>
-              <span className="text-white/80">
-                Fully handmade & customizable
-              </span>
-            </div>
-
-            <div className="flex items-center gap-2 text-sm">
-              <span>📍</span>
-              <span className="text-white/80">Delivered across India</span>
-            </div>
-
-            <p className="text-[11px] text-white/40 italic mt-2">
-              *Final delivery timeline may vary based on customization.*
-            </p>
-          </div>
-          {/* PINCODE DELIVERY CHECK */}
-          <div className="mt-6">
-            <label className="block text-[10px] uppercase tracking-widest text-white/50 mb-2">
-              Check delivery availability
-            </label>
-
-            <div className="flex gap-2">
-              <input
-                type="text"
-                value={pincode}
-                onChange={(e) => {
-  const value = e.target.value.replace(/\D/g, "");
-  setPincode(value);
-
-  // Clear message while typing
-  if (value.length < 6) {
-    setDeliveryInfo("");
-  }
-}}
-
-                placeholder="Enter pincode"
-                maxLength={6}
-                className="flex-1 bg-black border border-white/20 rounded-full px-4 py-3 text-sm focus:outline-none focus:border-red-500"
-              />
-
-              <button
-                onClick={checkDeliveryTimeline}
-                disabled={checking}
-                className="bg-red-600 px-5 rounded-full text-xs font-bold uppercase tracking-widest disabled:opacity-50"
-              >
-                {checking ? "Checking..." : "Check"}
-              </button>
-            </div>
-
-            {deliveryInfo && (
-              <p className="mt-2 text-sm text-white/70">{deliveryInfo}</p>
-            )}
-          </div>
-
-          {/* CUSTOMIZATION */}
-          <div className="mt-8 space-y-4">
-            {/* Occasion */}
-            <div>
-              <label className="block text-[10px] uppercase tracking-widest text-white/50 mb-1">
-                Occasion
-              </label>
-              <select
-                value={customization.occasion}
-                onChange={(e) =>
-                  setCustomization({
-                    ...customization,
-                    occasion: e.target.value,
-                  })
-                }
-                className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-sm text-white outline-none focus:border-red-600"
-              >
-                <option value="">Select occasion</option>
-                <option>Birthday</option>
-                <option>Anniversary</option>
-                <option>Valentine</option>
-                <option>Proposal</option>
-                <option>Other</option>
-              </select>
-            </div>
-
-            {/* Message */}
-            <div>
-              <label className="block text-[10px] uppercase tracking-widest text-white/50 mb-1">
-                Message on Gift
-              </label>
-              <textarea
-                rows="3"
-                placeholder="Write the message you want on the gift..."
-                value={customization.message}
-                onChange={(e) =>
-                  setCustomization({
-                    ...customization,
-                    message: e.target.value,
-                  })
-                }
-                className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-sm text-white outline-none focus:border-red-600 resize-none"
-              />
-            </div>
-          </div>
-
-          <div className="mt-8 flex justify-center">
-            {quantity === 0 ? (
-              /* ADD TO CART */
-              <button
-                onClick={() => {
-                  const alreadyInCart = cart.some((c) => c.id === product.id);
-
-                  onAddToCart(
-                    {
-                      ...product,
-                      customization,
-                    },
-                    1
-                  );
-
-                  if (!alreadyInCart) {
-                    setTimeout(openCart, 120);
-                  }
-                }}
-                className="bg-red-600 px-10 py-4 rounded-full font-black uppercase text-xs tracking-widest shadow-lg active:scale-95"
-              >
-                Add to Cart
-              </button>
-            ) : (
-              /* QUANTITY CONTROLS */
-              <div className="flex items-center gap-4 bg-black/40 px-6 py-3 rounded-full border border-white/10">
-                <button
-                  onClick={() =>
-                    onAddToCart(
-                      {
-                        ...product,
-                        customization: cartItem?.customization,
-                      },
-                      -1
-                    )
-                  }
-                  className="text-red-500 font-black text-xl"
-                >
-                  −
-                </button>
-
-                <span className="text-white font-black text-xl">
-                  {quantity}
-                </span>
-
-                <button
-                  onClick={() =>
-                    onAddToCart(
-                      {
-                        ...product,
-                        customization: cartItem?.customization ?? customization,
-                      },
-                      1
-                    )
-                  }
-                  className="text-green-500 font-black text-xl"
-                >
-                  +
-                </button>
-              </div>
-            )}
-          </div>
-
-          <FAQAccordion />
-          {/* REVIEWS */}
-          <ReviewsSection reviews={product.reviews} />
-        </div>
-      </div>
-
-      {/* FULLSCREEN LIGHTBOX */}
-      <AnimatePresence>
-        {lightboxOpen && (
-          <>
-            {/* BACKDROP */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setLightboxOpen(false)}
-              className="fixed inset-0 bg-black/95 z-[500]"
-            />
-
-            {/* LIGHTBOX */}
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="fixed inset-0 z-[510] flex items-center justify-center"
-              onTouchStart={(e) =>
-                (touchStartX.current = e.changedTouches[0].screenX)
-              }
-              onTouchEnd={(e) => {
-                touchEndX.current = e.changedTouches[0].screenX;
-
-                if (touchStartX.current - touchEndX.current > 50) {
-                  setActiveIndex((prev) => (prev + 1) % product.media.length);
-                }
-
-                if (touchEndX.current - touchStartX.current > 50) {
-                  setActiveIndex(
-                    (prev) =>
-                      (prev - 1 + product.media.length) % product.media.length
-                  );
-                }
-              }}
-            >
-              {/* CLOSE */}
-              <button
-                onClick={() => setLightboxOpen(false)}
-                className="absolute top-6 right-6 text-white text-3xl z-20"
-              >
-                ✕
-              </button>
-
-              {/* PREVIOUS */}
-              {product.media.length > 1 && (
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setActiveIndex(
-                      (activeIndex - 1 + product.media.length) %
-                        product.media.length
-                    );
-                  }}
-                  className="absolute left-6 text-white text-4xl z-20"
-                >
-                  ‹
-                </button>
-              )}
-
-              {/* MEDIA */}
-              <div className="max-w-[90vw] max-h-[90vh] overflow-hidden">
-                {product.media[activeIndex].type === "video" ? (
-                  <video
-                    src={product.media[activeIndex].url}
-                    controls
-                    autoPlay
-                    className="max-h-[90vh] rounded-xl"
-                  />
-                ) : (
-                  <motion.img
-                    src={product.media[activeIndex].url}
-                    className="max-h-[90vh] object-contain rounded-xl cursor-zoom-in"
-                    style={{ scale: zoom }}
-                    drag={zoom > 1}
-                    dragConstraints={{
-                      left: -200,
-                      right: 200,
-                      top: -200,
-                      bottom: 200,
-                    }}
-                    onWheel={(e) => {
-                      e.preventDefault();
-                      setZoom((z) =>
-                        Math.min(Math.max(z + e.deltaY * -0.001, 1), 3)
-                      );
-                    }}
-                    onTouchStart={(e) => {
-                      const now = Date.now();
-                      if (now - lastTap.current < 300) {
-                        setZoom((z) => (z === 1 ? 2 : 1));
-                      }
-                      lastTap.current = now;
-                    }}
-                  />
-                )}
-              </div>
-
-              {/* NEXT */}
-              {product.media.length > 1 && (
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setActiveIndex((activeIndex + 1) % product.media.length);
-                  }}
-                  className="absolute right-6 text-white text-4xl z-20"
-                >
-                  ›
-                </button>
-              )}
-              {/* ZOOM HINT — ADD HERE */}
-              <p className="absolute bottom-20 text-[10px] text-white/40 italic">
-                Pinch or scroll to zoom
-              </p>
-              {/* THUMBNAILS */}
-              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 bg-black/50 px-3 py-2 rounded-xl z-20">
+	*/}
+      <div className="flex flex-col md:flex-row gap-12 items-start">
+        {/* LEFT COLUMN: Sticky Wrapper */}
+        <div className="w-full md:w-1/2 md:sticky md:top-24">
+          {/* FIX: items-center centers the vertical thumbnails relative to the image */}
+          <div className="flex flex-col md:flex-row gap-4 items-center">
+            {/* Desktop Thumbnails */}
+            {product.media.length > 1 && (
+              <div className="hidden md:flex flex-col gap-2 overflow-y-auto max-h-[500px] no-scrollbar">
                 {product.media.map((item, i) => (
                   <div
                     key={i}
+                    ref={(el) => (thumbnailsRef.current[i] = el)}
                     onClick={() => setActiveIndex(i)}
-                    className={`w-14 h-14 rounded-lg overflow-hidden cursor-pointer border
-                ${
-                  i === activeIndex
-                    ? "border-white"
-                    : "border-transparent opacity-60"
-                }`}
+                    className={`w-16 h-16 rounded-lg overflow-hidden cursor-pointer border flex-shrink-0 transition-all
+                      ${
+                        i === activeIndex
+                          ? "border-red-600 scale-105"
+                          : "border-transparent opacity-60"
+                      }
+                    `}
                   >
                     {item.type === "video" ? (
                       <video
@@ -912,6 +693,282 @@ useEffect(() => {
                   </div>
                 ))}
               </div>
+            )}
+
+            {/* Main Display */}
+            <div className="flex-1 w-full">
+              <ProductGallery
+                media={[product.media[activeIndex]]}
+                height="h-[500px]"
+                onOpen={() => setLightboxOpen(true)}
+              />
+            </div>
+          </div>
+
+          {/* Mobile Thumbnails */}
+          {product.media.length > 1 && (
+            <div className="flex md:hidden mt-4 gap-2 overflow-x-auto pb-2">
+              {product.media.map((item, i) => (
+                <div
+                  key={i}
+                  ref={(el) => (thumbnailsRef.current[i] = el)}
+                  onClick={() => setActiveIndex(i)}
+                  className={`w-16 h-16 rounded-lg overflow-hidden cursor-pointer border flex-shrink-0
+                    ${
+                      i === activeIndex
+                        ? "border-red-600"
+                        : "border-transparent opacity-60"
+                    }
+                  `}
+                >
+                  {item.type === "video" ? (
+                    <video
+                      src={item.url}
+                      className="w-full h-full object-cover"
+                      muted
+                    />
+                  ) : (
+                    <img
+                      src={item.url}
+                      className="w-full h-full object-cover"
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* RIGHT COLUMN */}
+        <div className="w-full md:w-1/2">
+          <span className="text-red-600 text-[10px] font-black uppercase tracking-widest">
+            {product.category}
+          </span>
+          <h1 className="text-4xl font-black mt-2">{product.name}</h1>
+          <p className="text-3xl font-black mt-2">{product.priceRange}</p>
+
+          {/* Description */}
+          {typeof product.description === "string" ? (
+            <p
+              className="text-white/60 mt-6 leading-relaxed"
+              dangerouslySetInnerHTML={{ __html: product.description }}
+            />
+          ) : (
+            <div className="mt-6">
+              <h3 className="text-xs uppercase tracking-widest text-white/50 mb-3">
+                Description
+              </h3>
+              <ul className="space-y-3 text-sm text-white/80">
+                {product.description.map((point, index) => (
+                  <li key={index} className="flex gap-2 items-start">
+                    <span className="text-red-500 mt-1">•</span>
+                    <span
+                      className="leading-relaxed"
+                      dangerouslySetInnerHTML={{ __html: point }}
+                    />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {/* Info Card */}
+          <div className="mt-6 bg-white/5 border border-white/10 rounded-2xl p-4 space-y-2">
+            <div className="flex items-center gap-2 text-sm text-white/80">
+              <span>🚚</span> Delivery in <b>3–7 working days</b>
+            </div>
+            <div className="flex items-center gap-2 text-sm text-white/80">
+              <span>🎨</span> Fully handmade & customizable
+            </div>
+            <div className="flex items-center gap-2 text-sm text-white/80">
+              <span>📍</span> Delivered across India
+            </div>
+          </div>
+
+          {/* Pincode Check */}
+          <div className="mt-6">
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={pincode}
+                onChange={(e) => {
+                  const val = e.target.value.replace(/\D/g, "");
+                  setPincode(val);
+                  if (val.length < 6) setDeliveryInfo("");
+                }}
+                placeholder="Enter pincode"
+                maxLength={6}
+                className="flex-1 bg-black border border-white/20 rounded-full px-4 py-3 text-sm text-white outline-none focus:border-red-500"
+              />
+              <button
+                onClick={checkDeliveryTimeline}
+                disabled={checking}
+                className="bg-red-600 px-6 rounded-full text-xs font-bold uppercase text-white disabled:opacity-50"
+              >
+                {checking ? "..." : "Check"}
+              </button>
+            </div>
+            {deliveryInfo && (
+              <p className="mt-2 text-sm text-white/70">{deliveryInfo}</p>
+            )}
+          </div>
+
+          {/* Customization */}
+          <div className="mt-8 space-y-4">
+            <select
+              value={customization.occasion}
+              onChange={(e) =>
+                setCustomization({ ...customization, occasion: e.target.value })
+              }
+              className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-sm text-white outline-none focus:border-red-600"
+            >
+              <option value="">Select occasion</option>
+              <option>Birthday</option>
+              <option>Anniversary</option>
+              <option>Valentine</option>
+              <option>Proposal</option>
+              <option>Other</option>
+            </select>
+            <textarea
+              rows="3"
+              placeholder="Message on gift..."
+              value={customization.message}
+              onChange={(e) =>
+                setCustomization({ ...customization, message: e.target.value })
+              }
+              className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-sm text-white outline-none focus:border-red-600 resize-none"
+            />
+          </div>
+          {/* PHOTO INFO BOX */}
+          <div className="mt-6 p-4 bg-white/5 rounded-3xl border border-white/10">
+            <div className="flex items-center gap-3 mb-2">
+              <span className="text-lg">📸</span>
+              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-red-600">
+                Photo Personalization
+              </p>
+            </div>
+            <div className="bg-black/50 border border-red-600/20 p-3 rounded-2xl">
+              <p className="text-[11px] font-bold text-white flex items-center gap-2">
+                <span className="text-green-500">✓</span> Send via WhatsApp
+              </p>
+              <p className="text-[9px] text-white/50 mt-1 leading-relaxed">
+                No need to upload now! You can share your photos directly on
+                WhatsApp once you place this inquiry.
+              </p>
+            </div>
+          </div>
+          {/* Cart Button */}
+          <div className="mt-8 flex justify-center">
+            {quantity === 0 ? (
+              <button
+                onClick={() => {
+                  onAddToCart({ ...product, customization }, 1);
+                  setTimeout(openCart, 120);
+                }}
+                className="bg-red-600 px-10 py-4 rounded-full font-black uppercase text-xs text-white"
+              >
+                Add to Cart
+              </button>
+            ) : (
+              <div className="flex items-center gap-6 bg-black/40 px-6 py-3 rounded-full border border-white/10">
+                <button
+                  onClick={() => onAddToCart(product, -1)}
+                  className="text-red-500 font-black text-xl"
+                >
+                  −
+                </button>
+                <span className="text-white font-black text-xl">
+                  {quantity}
+                </span>
+                <button
+                  onClick={() => onAddToCart(product, 1)}
+                  className="text-green-500 font-black text-xl"
+                >
+                  +
+                </button>
+              </div>
+            )}
+          </div>
+          <FAQAccordion />
+          <ReviewsSection reviews={product.reviews} />
+        </div>
+      </div>
+
+      {/* LIGHTBOX (Logic unchanged) */}
+      <AnimatePresence>
+        {lightboxOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setLightboxOpen(false)}
+              className="fixed inset-0 bg-black/95 z-[500]"
+            />
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="fixed inset-0 z-[510] flex items-center justify-center"
+              onTouchStart={(e) =>
+                (touchStartX.current = e.changedTouches[0].screenX)
+              }
+              onTouchEnd={(e) => {
+                touchEndX.current = e.changedTouches[0].screenX;
+                if (touchStartX.current - touchEndX.current > 50)
+                  setActiveIndex((prev) => (prev + 1) % product.media.length);
+                if (touchEndX.current - touchStartX.current > 50)
+                  setActiveIndex(
+                    (prev) =>
+                      (prev - 1 + product.media.length) % product.media.length
+                  );
+              }}
+            >
+              <button
+                onClick={() => setLightboxOpen(false)}
+                className="absolute top-6 right-6 text-white text-3xl"
+              >
+                ✕
+              </button>
+              <div className="max-w-[90vw] max-h-[90vh]">
+                {product.media[activeIndex].type === "video" ? (
+                  <video
+                    src={product.media[activeIndex].url}
+                    controls
+                    autoPlay
+                    className="max-h-[90vh] rounded-xl"
+                  />
+                ) : (
+                  <motion.img
+                    src={product.media[activeIndex].url}
+                    className="max-h-[90vh] object-contain rounded-xl"
+                    style={{ scale: zoom }}
+                    onWheel={(e) =>
+                      setZoom((z) =>
+                        Math.min(Math.max(z + e.deltaY * -0.001, 1), 3)
+                      )
+                    }
+                  />
+                )}
+              </div>
+              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 bg-black/50 px-3 py-2 rounded-xl">
+                {product.media.map((item, i) => (
+                  <div
+                    key={i}
+                    onClick={() => setActiveIndex(i)}
+                    className={`w-14 h-14 rounded-lg overflow-hidden border ${
+                      i === activeIndex
+                        ? "border-white"
+                        : "border-transparent opacity-60"
+                    }`}
+                  >
+                    <img
+                      src={item.url}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
             </motion.div>
           </>
         )}
@@ -919,6 +976,7 @@ useEffect(() => {
     </div>
   );
 };
+
 const HomePage = ({ productsRef, navigate }) => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedOccasion, setSelectedOccasion] = useState("All");
@@ -1156,7 +1214,8 @@ export default function App() {
       msg += `${i + 1}. *${item.name}* (x${item.quantity}) - ${
         item.priceRange
       }\n`;
-
+      // 👇 ADD THIS LINE HERE
+      msg += `   📸 *Photos:* Customer will send via WhatsApp later if required\n`;
       if (item.customization?.occasion) {
         msg += `   • Occasion: ${item.customization.occasion}\n`;
       }
