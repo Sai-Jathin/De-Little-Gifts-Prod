@@ -313,7 +313,7 @@ const ReviewsSection = ({ reviews }) => {
   );
 };
 
-const ProductGallery = ({ media, height = "h-96" }) => {
+const ProductGallery = ({ media, height = "h-96", onOpen }) => {
   const [index, setIndex] = useState(0);
   const [touchStart, setTouchStart] = useState(null);
   const timerRef = useRef(null);
@@ -373,6 +373,7 @@ const ProductGallery = ({ media, height = "h-96" }) => {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.4 }}
           className="w-full h-full"
+          onClick={() => onOpen?.(index)}
         >
           {isVideo ? (
             <video
@@ -430,14 +431,49 @@ const slugify = (text) =>
     .toLowerCase()
     .replace(/ /g, "-")
     .replace(/[^\w-]+/g, "");
-const ProductPage = ({ onAddToCart, cart }) => {
+const ProductPage = ({ onAddToCart, cart, openCart }) => {
   const { slug } = useParams();
 
   const product = PRODUCTS.find((p) => slugify(p.id) === slug);
+
+  const cartItem = product ? cart.find((c) => c.id === product.id) : null;
+
+  const quantity = cartItem?.quantity ?? 0;
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
+
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [zoom, setZoom] = useState(1);
+  const lastTap = useRef(0);
+
   const [customization, setCustomization] = useState({
     occasion: "",
     message: "",
   });
+  useEffect(() => {
+    if (!lightboxOpen) return;
+
+    const handleKey = (e) => {
+      if (e.key === "Escape") {
+        setLightboxOpen(false);
+      }
+      if (e.key === "ArrowRight") {
+        setActiveIndex((prev) => (prev + 1) % product.media.length);
+      }
+      if (e.key === "ArrowLeft") {
+        setActiveIndex(
+          (prev) => (prev - 1 + product.media.length) % product.media.length
+        );
+      }
+    };
+
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [lightboxOpen, product.media.length]);
+  useEffect(() => {
+    setZoom(1);
+  }, [activeIndex]);
   if (!product) {
     return (
       <div className="pt-40 text-center text-white/40">Product not found</div>
@@ -455,7 +491,14 @@ const ProductPage = ({ onAddToCart, cart }) => {
 
       <div className="flex flex-col md:flex-row gap-12">
         <div className="w-full md:w-1/2">
-          <ProductGallery media={product.media} height="h-[500px]" />
+          <ProductGallery
+            media={product.media}
+            height="h-[500px]"
+            onOpen={(i) => {
+              setActiveIndex(i);
+              setLightboxOpen(true);
+            }}
+          />
         </div>
 
         <div className="w-full md:w-1/2">
@@ -540,22 +583,72 @@ const ProductPage = ({ onAddToCart, cart }) => {
             </div>
           </div>
 
-          <div className="flex gap-4 mt-8 w-full justify-center">
-            <button
-              onClick={() => onAddToCart(product, -1)}
-              className="bg-black/40 w-12 h-12 rounded-full flex items-center justify-center text-red-500 font-black text-xl"
-            >
-              −
-            </button>
-            <span className="text-white font-black text-xl">
-              {cart.find((c) => c.id === product.id)?.quantity || 0}
-            </span>
-            <button
-              onClick={() => onAddToCart(product, 1)}
-              className="bg-red-600 w-12 h-12 rounded-full flex items-center justify-center text-white font-black text-xl"
-            >
-              ＋
-            </button>
+          <div className="mt-8 flex justify-center">
+            {quantity === 0 ? (
+              /* ADD TO CART */
+              <button
+                onClick={() => {
+                  if (!customization.occasion) {
+                    alert("Please select an occasion ❤️");
+                    return;
+                  }
+
+                  const alreadyInCart = cart.some((c) => c.id === product.id);
+
+                  onAddToCart(
+                    {
+                      ...product,
+                      customization,
+                    },
+                    1
+                  );
+
+                  if (!alreadyInCart) {
+                    setTimeout(openCart, 120);
+                  }
+                }}
+                className="bg-red-600 px-10 py-4 rounded-full font-black uppercase text-xs tracking-widest shadow-lg active:scale-95"
+              >
+                Add to Cart
+              </button>
+            ) : (
+              /* QUANTITY CONTROLS */
+              <div className="flex items-center gap-4 bg-black/40 px-6 py-3 rounded-full border border-white/10">
+                <button
+                  onClick={() =>
+                    onAddToCart(
+                      {
+                        ...product,
+                        customization: cartItem?.customization,
+                      },
+                      -1
+                    )
+                  }
+                  className="text-red-500 font-black text-xl"
+                >
+                  −
+                </button>
+
+                <span className="text-white font-black text-xl">
+                  {quantity}
+                </span>
+
+                <button
+                  onClick={() =>
+                    onAddToCart(
+                      {
+                        ...product,
+                        customization: cartItem?.customization ?? customization,
+                      },
+                      1
+                    )
+                  }
+                  className="text-green-500 font-black text-xl"
+                >
+                  +
+                </button>
+              </div>
+            )}
           </div>
 
           <FAQAccordion />
@@ -563,6 +656,154 @@ const ProductPage = ({ onAddToCart, cart }) => {
           <ReviewsSection reviews={product.reviews} />
         </div>
       </div>
+
+      {/* FULLSCREEN LIGHTBOX */}
+      <AnimatePresence>
+        {lightboxOpen && (
+          <>
+            {/* BACKDROP */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setLightboxOpen(false)}
+              className="fixed inset-0 bg-black/95 z-[500]"
+            />
+
+            {/* LIGHTBOX */}
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="fixed inset-0 z-[510] flex items-center justify-center"
+              onTouchStart={(e) =>
+                (touchStartX.current = e.changedTouches[0].screenX)
+              }
+              onTouchEnd={(e) => {
+                touchEndX.current = e.changedTouches[0].screenX;
+
+                if (touchStartX.current - touchEndX.current > 50) {
+                  setActiveIndex((prev) => (prev + 1) % product.media.length);
+                }
+
+                if (touchEndX.current - touchStartX.current > 50) {
+                  setActiveIndex(
+                    (prev) =>
+                      (prev - 1 + product.media.length) % product.media.length
+                  );
+                }
+              }}
+            >
+              {/* CLOSE */}
+              <button
+                onClick={() => setLightboxOpen(false)}
+                className="absolute top-6 right-6 text-white text-3xl z-20"
+              >
+                ✕
+              </button>
+
+              {/* PREVIOUS */}
+              {product.media.length > 1 && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActiveIndex(
+                      (activeIndex - 1 + product.media.length) %
+                        product.media.length
+                    );
+                  }}
+                  className="absolute left-6 text-white text-4xl z-20"
+                >
+                  ‹
+                </button>
+              )}
+
+              {/* MEDIA */}
+              <div className="max-w-[90vw] max-h-[90vh] overflow-hidden">
+                {product.media[activeIndex].type === "video" ? (
+                  <video
+                    src={product.media[activeIndex].url}
+                    controls
+                    autoPlay
+                    className="max-h-[90vh] rounded-xl"
+                  />
+                ) : (
+                  <motion.img
+                    src={product.media[activeIndex].url}
+                    className="max-h-[90vh] object-contain rounded-xl cursor-zoom-in"
+                    style={{ scale: zoom }}
+                    drag={zoom > 1}
+                    dragConstraints={{
+                      left: -200,
+                      right: 200,
+                      top: -200,
+                      bottom: 200,
+                    }}
+                    onWheel={(e) => {
+                      e.preventDefault();
+                      setZoom((z) =>
+                        Math.min(Math.max(z + e.deltaY * -0.001, 1), 3)
+                      );
+                    }}
+                    onTouchStart={(e) => {
+                      const now = Date.now();
+                      if (now - lastTap.current < 300) {
+                        setZoom((z) => (z === 1 ? 2 : 1));
+                      }
+                      lastTap.current = now;
+                    }}
+                  />
+                )}
+              </div>
+
+              {/* NEXT */}
+              {product.media.length > 1 && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActiveIndex((activeIndex + 1) % product.media.length);
+                  }}
+                  className="absolute right-6 text-white text-4xl z-20"
+                >
+                  ›
+                </button>
+              )}
+              {/* ZOOM HINT — ADD HERE */}
+              <p className="absolute bottom-20 text-[10px] text-white/40 italic">
+                Pinch or scroll to zoom
+              </p>
+              {/* THUMBNAILS */}
+              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 bg-black/50 px-3 py-2 rounded-xl z-20">
+                {product.media.map((item, i) => (
+                  <div
+                    key={i}
+                    onClick={() => setActiveIndex(i)}
+                    className={`w-14 h-14 rounded-lg overflow-hidden cursor-pointer border
+                ${
+                  i === activeIndex
+                    ? "border-white"
+                    : "border-transparent opacity-60"
+                }`}
+                  >
+                    {item.type === "video" ? (
+                      <video
+                        src={item.url}
+                        className="w-full h-full object-cover"
+                        muted
+                      />
+                    ) : (
+                      <img
+                        src={item.url}
+                        className="w-full h-full object-cover"
+                      />
+                    )}
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
@@ -600,18 +841,18 @@ const HomePage = ({ productsRef, navigate }) => {
           Handmade customized gifts for birthdays, anniversary & special
           moments.
         </p>
-        <button
+        {/*<button
           onClick={() =>
             productsRef.current.scrollIntoView({ behavior: "smooth" })
           }
           className="mt-6 bg-red-600 px-10 py-4 rounded-full font-black uppercase text-xs tracking-widest"
         >
           Explore Handmade Gifts
-        </button>
+        </button>*/}
       </section>
 
       {/* FILTERS */}
-      <div className="flex flex-wrap gap-4 mb-6 px-6">
+      <div className="flex flex-wrap gap-4 mb-3 px-6">
         <select
           className="bg-black border border-red-700 text-white px-4 py-2 rounded"
           value={selectedCategory}
@@ -639,7 +880,7 @@ const HomePage = ({ productsRef, navigate }) => {
       </div>
 
       {/* PRODUCT GRID */}
-      <main ref={productsRef} className="pt-12 pb-12">
+      <main ref={productsRef} className="pt-3 pb-12">
         <AnimatePresence mode="wait">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -714,27 +955,37 @@ export default function App() {
 
   const handleUpdateCart = (product, delta, e) => {
     if (e) e.stopPropagation();
+
     setCart((prev) => {
-      const existing = prev.find((item) => item.id === product.id);
+      const existingIndex = prev.findIndex((item) => item.id === product.id);
 
-      if (existing) {
-        // Update existing item
-        const updated = prev
-          .map((item) =>
-            item.id === product.id
-              ? { ...item, quantity: Math.max(item.quantity + delta, 0) }
-              : item
-          )
-          .filter((item) => item.quantity > 0); // remove if 0
-        return updated;
+      // 🟢 If item already exists → update it
+      if (existingIndex !== -1) {
+        const updated = [...prev];
+
+        updated[existingIndex] = {
+          ...updated[existingIndex],
+          quantity: Math.max(updated[existingIndex].quantity + delta, 0),
+          customization:
+            product.customization ?? updated[existingIndex].customization,
+        };
+
+        // remove item if quantity becomes 0
+        return updated.filter((item) => item.quantity > 0);
       }
 
-      // Only add new item if delta is positive
+      // 🟢 Add new item only if delta is positive
       if (delta > 0) {
-        return [...prev, { ...product, quantity: 1 }];
+        return [
+          ...prev,
+          {
+            ...product,
+            quantity: 1,
+          },
+        ];
       }
 
-      // delta <= 0 and product not in cart: do nothing
+      // 🟢 If trying to remove non-existing item → do nothing
       return prev;
     });
   };
@@ -858,7 +1109,7 @@ export default function App() {
           className="bg-white/5 px-4 py-2 rounded-full border border-white/10 flex items-center gap-3"
         >
           <span className="text-[10px] font-black uppercase tracking-widest text-white/50">
-            Inquiry
+            Cart
           </span>
           <span className="bg-red-600 text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-bold">
             {cart.reduce((a, c) => a + c.quantity, 0)}
@@ -894,6 +1145,7 @@ export default function App() {
               <ProductPage
                 onAddToCart={handleUpdateCart} // pass the function directly
                 cart={cart} // <- pass cart here
+                openCart={() => setCartOpen(true)} // 👈 ADD THIS
               />
             }
           />
@@ -919,7 +1171,7 @@ export default function App() {
             >
               <div className="flex justify-between items-center mb-10">
                 <h3 className="text-2xl font-black italic uppercase tracking-tighter text-red-600">
-                  Your Inquiry
+                  Your Cart
                 </h3>
                 <button
                   onClick={() => setCartOpen(false)}
