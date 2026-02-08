@@ -1,6 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Routes, Route, useNavigate, useParams } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  useNavigate,
+  useParams,
+  useLocation,
+} from "react-router-dom";
 
 const OWNER_PHONE = "919989311081";
 
@@ -446,6 +452,16 @@ const ProductPage = ({ onAddToCart, cart, openCart }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [zoom, setZoom] = useState(1);
   const lastTap = useRef(0);
+  const [pincode, setPincode] = useState(
+    () => localStorage.getItem("pincode") || ""
+  );
+  const [deliveryInfo, setDeliveryInfo] = useState(
+    () => localStorage.getItem("deliveryInfo") || ""
+  );
+  const [locationInfo, setLocationInfo] = useState(
+    () => JSON.parse(localStorage.getItem("locationInfo")) || null
+  );
+  const [checking, setChecking] = useState(false);
 
   const [customization, setCustomization] = useState({
     occasion: "",
@@ -474,6 +490,69 @@ const ProductPage = ({ onAddToCart, cart, openCart }) => {
   useEffect(() => {
     setZoom(1);
   }, [activeIndex]);
+  useEffect(() => {
+    if (pincode && deliveryInfo) return;
+  }, []);
+useEffect(() => {
+  if (pincode.length === 6) {
+    checkDeliveryTimeline();
+  }
+}, [pincode]);
+
+  const checkDeliveryTimeline = async () => {
+	   if (checking) return;
+    if (pincode.length !== 6) {
+      setDeliveryInfo("Please enter a valid 6-digit pincode");
+      return;
+    }
+
+    try {
+      setChecking(true);
+
+      const res = await fetch(
+        `https://api.postalpincode.in/pincode/${pincode}`
+      );
+      const data = await res.json();
+
+      if (data[0].Status !== "Success") {
+        setDeliveryInfo("Delivery not available for this pincode");
+        return;
+      }
+
+      const postOffice = data[0].PostOffice[0];
+      const city = postOffice.District;
+      const state = postOffice.State;
+
+      // 🕒 Delivery estimate (simple logic – can expand later)
+      let timeline = "3–5 working days";
+      if (
+        state === "Kerala" ||
+        state === "Tamil Nadu" ||
+        state === "Karnataka" ||
+        state === "Telangana"
+      ) {
+        timeline = "2–4 working days";
+      }
+
+      const infoText = `📍 Delivery available in ${city}, ${state}. Estimated delivery: ${timeline}.`;
+
+      // SAVE EVERYTHING
+      setDeliveryInfo(infoText);
+      setLocationInfo({ city, state, timeline });
+
+      localStorage.setItem("pincode", pincode);
+      localStorage.setItem("deliveryInfo", infoText);
+      localStorage.setItem(
+        "locationInfo",
+        JSON.stringify({ city, state, timeline })
+      );
+    } catch (err) {
+      setDeliveryInfo("Something went wrong. Try again.");
+    } finally {
+      setChecking(false);
+    }
+  };
+
   if (!product) {
     return (
       <div className="pt-40 text-center text-white/40">Product not found</div>
@@ -536,6 +615,44 @@ const ProductPage = ({ onAddToCart, cart, openCart }) => {
               *Final delivery timeline may vary based on customization.*
             </p>
           </div>
+          {/* PINCODE DELIVERY CHECK */}
+          <div className="mt-6">
+            <label className="block text-[10px] uppercase tracking-widest text-white/50 mb-2">
+              Check delivery availability
+            </label>
+
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={pincode}
+                onChange={(e) => {
+  const value = e.target.value.replace(/\D/g, "");
+  setPincode(value);
+
+  // Clear message while typing
+  if (value.length < 6) {
+    setDeliveryInfo("");
+  }
+}}
+
+                placeholder="Enter pincode"
+                maxLength={6}
+                className="flex-1 bg-black border border-white/20 rounded-full px-4 py-3 text-sm focus:outline-none focus:border-red-500"
+              />
+
+              <button
+                onClick={checkDeliveryTimeline}
+                disabled={checking}
+                className="bg-red-600 px-5 rounded-full text-xs font-bold uppercase tracking-widest disabled:opacity-50"
+              >
+                {checking ? "Checking..." : "Check"}
+              </button>
+            </div>
+
+            {deliveryInfo && (
+              <p className="mt-2 text-sm text-white/70">{deliveryInfo}</p>
+            )}
+          </div>
 
           {/* CUSTOMIZATION */}
           <div className="mt-8 space-y-4">
@@ -588,11 +705,6 @@ const ProductPage = ({ onAddToCart, cart, openCart }) => {
               /* ADD TO CART */
               <button
                 onClick={() => {
-                  if (!customization.occasion) {
-                    alert("Please select an occasion ❤️");
-                    return;
-                  }
-
                   const alreadyInCart = cart.some((c) => c.id === product.id);
 
                   onAddToCart(
@@ -852,9 +964,19 @@ const HomePage = ({ productsRef, navigate }) => {
       </section>
 
       {/* FILTERS */}
-      <div className="flex flex-wrap gap-4 mb-3 px-6">
+      <div className="flex gap-3 mb-3 px-4 overflow-x-auto no-scrollbar md:flex-wrap md:px-6">
         <select
-          className="bg-black border border-red-700 text-white px-4 py-2 rounded"
+          className="
+  bg-black
+  border border-red-700
+  text-white
+  px-3 py-2
+  rounded-full
+  text-xs
+  min-w-[140px]
+  focus:outline-none
+  focus:border-red-500
+"
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
         >
@@ -867,7 +989,17 @@ const HomePage = ({ productsRef, navigate }) => {
         </select>
 
         <select
-          className="bg-black border border-red-700 text-white px-4 py-2 rounded"
+          className="
+  bg-black
+  border border-red-700
+  text-white
+  px-3 py-2
+  rounded-full
+  text-xs
+  min-w-[140px]
+  focus:outline-none
+  focus:border-red-500
+"
           value={selectedOccasion}
           onChange={(e) => setSelectedOccasion(e.target.value)}
         >
@@ -932,6 +1064,15 @@ const HomePage = ({ productsRef, navigate }) => {
     </>
   );
 };
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, [pathname]);
+
+  return null;
+}
 
 export default function App() {
   const navigate = useNavigate();
@@ -991,15 +1132,25 @@ export default function App() {
   };
 
   const isInCart = (id) => cart.some((item) => item.id === id);
-
   const handleWhatsAppOrder = (e) => {
     e.preventDefault();
 
     let msg =
-      `*✨ NEW CUSTOM INQUIRY - DE LITTLE GIFTS ✨*\n\n` +
+      `*✨ DE LITTLE GIFTS - NEW CUSTOM INQUIRY ✨*\n\n` +
       `👤 *Customer:* ${customer.name}\n` +
-      `📞 *Mobile:* ${customer.mobile}\n\n` +
-      `--- *REQUESTED CRAFTS* ---\n`;
+      `📞 *Mobile:* ${customer.mobile}\n\n`;
+
+    // 📍 DELIVERY INFO (from pincode)
+    const savedLocation = JSON.parse(localStorage.getItem("locationInfo"));
+    if (savedLocation) {
+      msg +=
+        `📍 *Delivery Location*\n` +
+        `City: ${savedLocation.city}\n` +
+        `State: ${savedLocation.state}\n` +
+        `Estimated Delivery: ${savedLocation.timeline}\n\n`;
+    }
+
+    msg += `--- *REQUESTED CRAFTS* ---\n`;
 
     cart.forEach((item, i) => {
       msg += `${i + 1}. *${item.name}* (x${item.quantity}) - ${
@@ -1019,9 +1170,20 @@ export default function App() {
 
     msg += `💬 _I want to discuss customization and get the final pricing._`;
 
-    window.location.href = `https://wa.me/${OWNER_PHONE}?text=${encodeURIComponent(
+    const whatsappURL = `https://wa.me/${OWNER_PHONE}?text=${encodeURIComponent(
       msg
     )}`;
+
+    // ✅ Desktop → WhatsApp Web | Mobile → WhatsApp App (automatic)
+    window.open(whatsappURL, "_blank");
+
+    // ✅ RESET FLOW (premium UX)
+    setCart([]);
+    setCustomer({ name: "", mobile: "" });
+    setCheckoutOpen(false);
+    setCartOpen(false);
+
+    navigate("/");
   };
 
   const MiniProductCard = ({ product, onAdd, onPreview }) => (
@@ -1134,6 +1296,7 @@ export default function App() {
 */}
 
       <div className="pt-[140px]">
+        <ScrollToTop />
         <Routes>
           <Route
             path="/"

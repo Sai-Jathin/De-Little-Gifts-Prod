@@ -45,3 +45,13 @@ button:disabled {
   cursor: not-allowed;
   opacity: 0.3;
 }
+/* ---------- HIDE SCROLLBAR (for mobile filter pills) ---------- */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE & Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
